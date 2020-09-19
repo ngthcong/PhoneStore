@@ -1,0 +1,15 @@
+﻿.p-div,
+.hp-div,
+.cg-div,
+.pb-div {
+    display: none;
+    height: 0;
+    }
+
+    .p-div.show,
+    .hp-div.show,
+    .cg-div.show,
+    .pb-div.show {
+        display: flex;
+        height: auto;
+    }

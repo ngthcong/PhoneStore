@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewData["Title"] = "Cart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section css{
+
+    <link href="~/styles/cart.css" rel="stylesheet" />
+    <link href="~/styles/cart_responsive.css" rel="stylesheet" />
+}
+
+@model PhoneStore.Models.ViewModel.CartViewModel
+
+<!-- Cart Info -->
+
+<div class="cart_info mt-5">
+    @await Html.PartialAsync("_Cart", Model)
+</div>
+
+@section scripts{
+    <script src="~/plugins/jquery-validation/jquery.validate.js"></script>
+    <script src="~/js/cart.js"></script>
+}

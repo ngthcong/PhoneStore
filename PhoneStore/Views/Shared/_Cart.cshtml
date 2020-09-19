@@ -1,0 +1,218 @@
+﻿
+@model PhoneStore.Models.ViewModel.CartViewModel
+@using PhoneStore.CustomHandler
+@{
+
+
+}
+<div class="container" id="cart_container">
+    @if (Model != null)
+    {
+        <div class="row row_cart_buttons">
+            <div class="col">
+                <div class="cart_buttons d-flex flex-lg-row flex-column align-items-start justify-content-start">
+                    <div class="button continue_shopping_button"><a href="@Url.Action("index","home")">Mua thêm sản phẩm khác</a></div>
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <!-- Column Titles -->
+                <div class="cart_info_columns clearfix">
+                    <div class="cart_info_col cart_info_col_product">Sản phẩm</div>
+                    <div class="cart_info_col cart_info_col_price">Giá</div>
+                    <div class="cart_info_col cart_info_col_quantity">Số lượng</div>
+
+                </div>
+            </div>
+        </div>
+        @foreach (var item in Model.cartItem)
+        {
+
+            <div class="row cart_items_row">
+                <div class="col">
+
+                    <!-- Cart Item -->
+                    <div class="cart_item d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-start">
+                        <!-- Name -->
+                        <div class="cart_item_product d-flex flex-row align-items-center justify-content-start">
+                            <div class="cart_item_image">
+                                <div><img src="~/@item.varImage" alt=""></div>
+                            </div>
+                            <div class="cart_item_name_container">
+                                <div class="cart_item_name"><a href="#">@item.ProName</a></div>
+                                <div class="cart_item_edit ">
+                                    @foreach (var color in item.VariantList)
+                                    {
+
+                                        <div class="coloritem">
+                                            <input class="input-variant" type="radio" id="@color.VarId" name="@item.ProId" data-pid="@item.ProId" data-vid="@color.VarId" @if (color.Selected == true) { @: checked="checked"
+                                                   }>
+                                            <label>@color.VarColor</label>
+                                        </div>
+
+                                    }
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Price -->
+                        <div class="cart_item_price"> @Currency.CurrencyFormat(item.ProRetailPrice)</div>
+                        <!-- Quantity -->
+                        <div class="cart_item_quantity">
+                            <div class="product_quantity_container">
+                                <div class="product_quantity clearfix">
+
+                                    <input class="quantity_input" type="text" disabled pattern="[0-9]*" value="@item.qty">
+                                    <div class="quantity_buttons">
+                                        <div class="quantity_inc quantity_control qty_up" data-pid="@item.ProId"><i class="fa fa-chevron-up" aria-hidden="true"></i></div>
+                                        <div class="quantity_dec quantity_control qty_down" data-pid="@item.ProId"><i class="fa fa-chevron-down" aria-hidden="true"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+        }
+
+
+        <form id="checkout-form" enctype="multipart/form-data">
+            <div class="row row_extra">
+                <div class="col-lg-4 ">
+                    <div class="cart_total">
+                        <div class="section_title">Tổng tiền</div>
+
+                        <div class="cart_total_container">
+                            <ul>
+                                <li class="d-flex flex-row align-items-center justify-content-start">
+                                    <div class="cart_total_title">Tạm tính</div>
+                                    <div class="cart_total_value ml-auto">@Currency.CurrencyFormat(Model.cartPrice.temp)</div>
+                                </li>
+                                <li class="d-flex flex-row align-items-center justify-content-start">
+                                    <div class="cart_total_title">Khuyến mãi</div>
+                                    <div class="cart_total_value ml-auto">-@Currency.CurrencyFormat(Model.cartPrice.discount)</div>
+                                </li>
+                                <li class="d-flex flex-row align-items-center justify-content-start">
+                                    <div class="cart_total_title">Tổng tiền</div>
+                                    <div class="cart_total_value ml-auto">@Currency.CurrencyFormat(Model.cartPrice.total)</div>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-lg-8 ">
+
+                    <!-- Delivery -->
+                    <div class="contact">
+                        <div class="section_title">Thông tin khách hàng</div>
+                        <div class="contact_form_container">
+                            <div class="contact_form">
+                                <div class="row">
+                                    <div class="col-xl-6 input-group1">
+                                        <!-- Name -->
+                                        <label for="contact_name">Họ và tên*</label>
+                                        <input type="text" id="InvCusName" name="InvCusName" class="contact_input"
+                                               >
+                                    </div>
+                                    <div class="col-xl-6 input-group1">
+                                        <!-- Last Name -->
+                                        <label for="contact_last_name">Số điện thoại*</label>
+                                        <input type="text" id="InvCusPhone" name="InvCusPhone" class="contact_input"
+                                               >
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-6  input-group1">
+                                        <!-- Last Name -->
+                                        <label for="contact_last_name">Email*</label>
+                                        <input type="email" id="InvCusEmail" name="InvCusEmail" class="contact_input"
+                                               >
+                                    </div>
+                                    <div class="col-xl-6 input-group1">
+                                        <!-- Name -->
+                                        <label for="contact_name">Tỉnh/ Thành phố*</label>
+                                        <select id="cities" name="InvCityId" class="contact_input">
+                                            <option value="" disabled selected hidden></option>
+                                            @foreach (var item in Model.cities)
+                                            {
+                                                <option value="@item.CityId">@item.CityName</option>
+
+                                            }
+
+
+                                        </select>
+                                    </div>
+
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-6 input-group1">
+                                        <!-- Last Name -->
+                                        <label for="contact_last_name">Quận/ Huyện*</label>
+                                        <select id="district" name="InvDistrictId" disabled="disabled" class="contact_input">
+                                        </select>
+                                    </div>
+                                    <div class="col-xl-6 input-group1">
+                                        <!-- Name -->
+                                        <label for="contact_name">Phường/ Xã*</label>
+                                        <select id="ward" name="InvWardId" disabled="disabled" class="contact_input">
+                                        </select>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-xl-12 input-group1">
+                                        <!-- Name -->
+                                        <label for="contact_name">Số nhà và đường*</label>
+                                        <input type="text" id="contact_name" name="InvAddress" class="contact_input"
+                                               >
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+            <div class="row row_button justify-content-center">
+
+
+                <div class="col-lg-5">
+                    <button type="submit" style=" height: 60px; font-size: 15px; text-transform:uppercase;" class=" checkout_button">
+                        <strong>Đặt hàng</strong>
+
+                    </button>
+                </div>
+            </div>
+        </form>
+    }
+    else
+    {
+        <div class="continue_shopping">
+            <i class="fa fa-shopping-cart"></i>
+            <h3>Không có sản phẩm nào trong giỏ hàng của bạn</h3>
+            <div class="button checkout_button w-25 m-auto">
+                <a href="@Url.Action("index","home")">
+                    <strong>Tiếp tục mua sắm</strong>
+                </a>
+
+            </div>
+        </div>
+
+    }
+
+</div>		

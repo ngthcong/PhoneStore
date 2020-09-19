@@ -1,0 +1,175 @@
+﻿  <!-- Header -->
+@using PhoneStore.Models.ViewModel
+@using PhoneStore.Models.ViewModel.User
+@using PhoneStore.CustomHandler
+@model PhoneStore.Models.ViewModel.HeaderViewModel
+
+@{
+    IEnumerable<BrandViewModel> pbrands = Model.brands;
+    IEnumerable<TypeViewModel> types = Model.types;
+    UserViewModel user = Model.user;
+    int cartCount = Model.cartCount;
+}
+<header class="header">
+    <div class="header_container">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="header_content d-flex flex-row align-items-center justify-content-start">
+                        <div class="logo"><a href="@Url.Action("Index","Home")">Sublime.</a></div>
+                        <nav class="main_nav">
+                            <ul>
+                                <li class="hassubs active">
+                                    <a href="@Url.Action("Product","Product",new {gid = 1 })">Điện thoại</a>
+                                    <ul>
+                                        @foreach (var item in pbrands)
+                                        {
+                                            <li><a href="@Url.Action("Product","Product", new { gid = 1, bid = item.BrandId })">@item.BrandName</a></li>
+                                        }
+
+                                    </ul>
+                                </li>
+                                <li class="hassubs">
+                                    <a href="@Url.Action("Product","Product",new {gid = 3})">Laptop</a>
+                                    <ul>
+                                        <li><a href="categories.html">Category</a></li>
+                                        <li><a href="categories.html">Category</a></li>
+                                        <li><a href="categories.html">Category</a></li>
+                                        <li><a href="categories.html">Category</a></li>
+                                        <li><a href="categories.html">Category</a></li>
+                                    </ul>
+                                </li>
+                                <li class="hassubs">
+                                    <a href="@Url.Action("Product","Product",new {gid = 2})">Phụ kiện</a>
+                                    <ul>
+                                        @foreach (var item in types)
+                                        {
+                                            <li><a href="@Url.Action("Product","Product", new { gid = item.GroupId, tid = item.TypeId  })">@item.TypeName</a></li>
+                                        }
+
+
+                                    </ul>
+                                </li>
+
+                                @*<li><a href="contact.html">Contact</a></li>*@
+                            </ul>
+                        </nav>
+                        <div class="header_extra ml-auto">
+                            <div class="search">
+                                <div class="search_icon">
+                                    <i class="fa fa-search"></i>
+                                </div>
+                            </div>
+                            <div class="shopping_cart">
+                                <a href="@Url.Action("Cart","Product")">
+                                    <i class="fa fa-shopping-cart"></i>
+                                    <div>Cart <span>(@cartCount)</span></div>
+                                </a>
+                            </div>
+                            @if (user != null)
+                            {
+                                <div class="account">
+                                    <a href="@Url.Action("Account", "User")">
+                                        @{
+                                            var name = FileManager.StringSeparator(user.AccName," ");
+
+                                        }
+                                        <div>Chào @name.Last() </div>
+                                    </a>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="account">
+                                    <a href="@Url.Action("Login","Home")">
+
+                                        <div>Tài khoản </div>
+                                    </a>
+                                </div>
+                            }
+
+                            <div class="hamburger"><i class="fa fa-bars" aria-hidden="true"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Panel -->
+    <div class="search_panel trans_300">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="search_panel_content d-flex flex-row align-items-center justify-content-end">
+                        <form action="#">
+                            <input type="text" class="search_input" placeholder="Search" required="required">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Social -->
+    
+</header>
+
+<!-- Menu -->
+
+<div class="menu menu_mm trans_300">
+    <div class="menu_container menu_mm">
+        <div class="page_menu_content">
+
+            <div class="page_menu_search menu_mm">
+                <form action="#">
+                    <input type="search" required="required" class="page_menu_search_input menu_mm" placeholder="Search for products...">
+                </form>
+            </div>
+            <ul class="page_menu_nav menu_mm">
+                <li class="page_menu_item has-children menu_mm">
+                    <a href="index.html">Điện thoại<i class="fa fa-angle-down"></i></a>
+                    <ul class="page_menu_selection menu_mm">
+                        @foreach (var item in pbrands)
+                        {
+                            <li><a href="@Url.Action("Product","Product")">@item.BrandName</a></li>
+                            <li class="page_menu_item menu_mm"><a href="@Url.Action("Product","Product")">@item.BrandName<i class="fa fa-angle-down"></i></a></li>
+                        }
+                    </ul>
+                </li>
+                <li class="page_menu_item has-children menu_mm">
+                    <a href="categories.html">Laptop<i class="fa fa-angle-down"></i></a>
+                    <ul class="page_menu_selection menu_mm">
+                        <li class="page_menu_item menu_mm"><a href="categories.html">Category<i class="fa fa-angle-down"></i></a></li>
+                        <li class="page_menu_item menu_mm"><a href="categories.html">Category<i class="fa fa-angle-down"></i></a></li>
+                        <li class="page_menu_item menu_mm"><a href="categories.html">Category<i class="fa fa-angle-down"></i></a></li>
+                        <li class="page_menu_item menu_mm"><a href="categories.html">Category<i class="fa fa-angle-down"></i></a></li>
+                    </ul>
+                </li>
+                <li class="page_menu_item has-children menu_mm">
+                    <a href="@Url.Action("Product","Product")">Phụ kiện<i class="fa fa-angle-down"></i></a>
+                    <ul class="page_menu_selection menu_mm">
+                        @foreach (var item in types)
+                        {
+                            <li class="page_menu_item menu_mm"><a href="@Url.Action("Product","Product")">@item.TypeName<i class="fa fa-angle-down"></i></a></li>
+                        }
+                    </ul>
+                </li>
+                <li class="page_menu_item menu_mm"><a href="index.html">Accessories<i class="fa fa-angle-down"></i></a></li>
+                <li class="page_menu_item menu_mm"><a href="#">Offers<i class="fa fa-angle-down"></i></a></li>
+                <li class="page_menu_item menu_mm"><a href="contact.html">Contact<i class="fa fa-angle-down"></i></a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="menu_close"><i class="fa fa-times" aria-hidden="true"></i></div>
+
+    <div class="menu_social">
+        <ul>
+            <li><a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li>
+            <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+            <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+            <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+        </ul>
+    </div>
+</div>

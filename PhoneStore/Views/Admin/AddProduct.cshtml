@@ -1,0 +1,860 @@
+﻿
+@{
+    ViewData["Title"] = "AddProduct";
+    Layout = "~/Views/Shared/Admin/_AdminLayout.cshtml";
+}
+
+
+@section css {
+    <link href="~/css/addproduct.css" rel="stylesheet" />
+}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>General Form</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Thêm sản phẩm</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-12">
+
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <!-- general form elements -->
+                            <div class="card card-primary">
+                                <div class="card-header">
+                                    <h3 class="card-title">Chọn nhóm sản phẩm</h3>
+                                </div>
+                                <!-- /.card-header -->
+                                <!-- form start -->
+
+                                <div class="card-body">
+                                    <div class="form-group">
+
+                                        <select id="pro-select" class="form-control">
+                                            <option value="" disabled selected hidden></option>
+                                            <option value="1">Điện thoại</option>
+                                            <option value="5">Laptop</option>
+                                            <option value="2">Sạc cáp</option>
+                                            <option value="3">Tai nghe</option>
+                                            <option value="4">Sạc dự phòng</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+
+
+                                <!-- /.card-body -->
+
+
+
+                            </div>
+                            <!-- /.card -->
+                        </div>
+
+
+                        <div class="col-sm-10">
+                            <!-- Phone -->
+                            <div id="p-div" class="card card-success p-div">
+                                <div class="card-header">
+                                    <h3 class="card-title">Thông tin sản phẩm</h3>
+                                </div>
+                                <form id="p-form" enctype="multipart/form-data">
+                                    <div class="card-body">
+                                        <h3 class="mt-2 mb-2">Thông tin chi tiết</h3>
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Tên sản phẩm</label>
+                                                    <input type="text" class="form-control" id="pName" name="proName" placeholder="">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Giá thành</label>
+                                                    <input type="text" class="form-control" id="pRetailPrice" name="proRetailPrice" placeholder="">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Hãng sản xuất</label>
+                                                    <select id="pbrand" name="proBrandId" class="form-control">
+                                                        <option value="" disabled selected hidden></option>
+                                                        <option value="1">Apple</option>
+                                                        <option value="2">Samsung</option>
+                                                        <option value="3">OPPO</option>
+                                                        <option value="4">Vsmart</option>
+                                                        <option value="5">Xiaomi</option>
+                                                        <option value="6">Realme</option>
+                                                        <option value="7">Vivo</option>
+                                                        <option value="8">Nokia</option>
+                                                        <option value="9">Huawei</option>
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label>Hình sản phẩm</label>
+                                                    <input type="file" class="form-control-file border" id="pImage" name="proImageStream" accept="image/*" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="spec-info">
+                                            <h3 class="mt-2 mb-2">Thông số kỹ thuật</h3>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label> Màn hình</label>
+                                                        <input type="text" class="form-control" id="pScreen" data-spec="1" name="pScreen" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Camera trước</label>
+                                                        <input type="text" class="form-control" id="pFrontCam" data-spec="2" name="pFrontCam" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Camera sau</label>
+                                                        <input type="text" class="form-control" id="pRearCam" data-spec="3" name="pRearCam" placeholder="">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>CPU</label>
+                                                        <input type="text" class="form-control" id="pCPU" data-spec="4" name="pCPU" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>RAM</label>
+                                                        <input type="text" class="form-control" id="pRAM" data-spec="5" name="pRAM" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>GPU</label>
+                                                        <input type="text" class="form-control" id="pGPU" data-spec="6" name="pGPU" placeholder="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Bộ nhớ trong</label>
+                                                        <input type="text" class="form-control" id="pStorage" data-spec="7" name="pStorage" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Cảm biến</label>
+                                                        <input type="text" class="form-control" id="pSensor" data-spec="8" name="pSensor" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Hệ điều hành</label>
+                                                        <input type="text" class="form-control" id="pROM" data-spec="9" name="pROM" placeholder="">
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Loại SIM</label>
+                                                        <input type="text" class="form-control" id="pSimType" data-spec="10" name="pSimType" placeholder="">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Kết nối</label>
+                                                        <input type="text" class="form-control" id="pConnect" data-spec="11" name="pConnect" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Pin</label>
+                                                        <input type="text" class="form-control" id="pBattery" data-spec="12" name="pBattery" placeholder="">
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Thời gian bảo hành</label>
+                                                        <input type="text" class="form-control" id="pWarranty" data-spec="13" name="pWarranty" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Xuất xứ</label>
+                                                        <input type="text" class="form-control" id="pOrigin" data-spec="14" name="pOrigin" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Năm sản xuất</label>
+                                                        <input type="text" class="form-control" id="pYOM" data-spec="15" name="pYOM" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <input name="proGroupId" type="hidden" value="1" />
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="card-footer">
+
+
+                                        <button type="submit" class="btn btn-info float-right">Tạo mới sản phẩm</button>
+                                    </div>
+                                </form>
+                                <!-- /.card-body -->
+                            </div>
+                            <!-- Laptop -->
+                            <div id="l-div" class="card card-success p-div">
+                                <div class="card-header">
+                                    <h3 class="card-title">Thông tin sản phẩm</h3>
+                                </div>
+                                <form id="l-form" enctype="multipart/form-data">
+                                    <div class="card-body">
+                                        <h3 class="mt-2 mb-2">Thông tin chi tiết</h3>
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Tên sản phẩm</label>
+                                                    <input type="text" class="form-control" id="lName" name="proName" placeholder="">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Giá thành</label>
+                                                    <input type="number" class="form-control" id="lRetailPrice" name="proRetailPrice" placeholder="">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Hãng sản xuất</label>
+                                                    <select id="lbrand" name="proBrandId" class="form-control">
+                                                        <option value="" disabled selected hidden></option>
+                                                        <option value="1">Apple</option>
+                                                        <option value="18">Asus</option>
+                                                        <option value="19">Dell</option>
+                                                        <option value="20">Acer</option>
+                                                        <option value="21">HP</option>
+                                                        <option value="22">MSI</option>
+                                                        
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label>Hình sản phẩm</label>
+                                                    <input type="file" class="form-control-file border" id="lImage" name="proImageStream" accept="image/*" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="spec-info">
+                                            <h3 class="mt-2 mb-2">Thông số kỹ thuật</h3>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>CPU</label>
+                                                        <input type="text" class="form-control" id="lCPU" data-spec="4" name="lCPU" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>RAM</label>
+                                                        <input type="text" class="form-control" id="lRAM" data-spec="5" name="lRAM" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label> Màn hình</label>
+                                                        <input type="text" class="form-control" id="lScreen" data-spec="1" name="lScreen" placeholder="">
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+
+                                            <div class="row">
+
+
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Card đồ hoạ</label>
+                                                        <input type="text" class="form-control" id="lGPU" data-spec="39" name="lGPU" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Ổ cứng</label>
+                                                        <input type="text" class="form-control" id="lStorage" data-spec="40" name="lStorage" placeholder="">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Hệ điều hành</label>
+                                                        <input type="text" class="form-control" id="lOS" data-spec="9" name="lOS" placeholder="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Trọng lượng (kg)</label>
+                                                        <input type="text" class="form-control" id="lWeight" data-spec="41" name="lWeight" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Kích thước</label>
+                                                        <input type="text" class="form-control" id="lDimension" data-spec="42" name="lDimension" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Pin</label>
+                                                        <input type="text" class="form-control" id="lBattery" data-spec="12" name="lBattery" placeholder="">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Thời gian bảo hành</label>
+                                                        <input type="text" class="form-control" id="lWarranty" data-spec="13" name="lWarranty" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Xuất xứ</label>
+                                                        <input type="text" class="form-control" id="lOrigin" data-spec="14" name="lOrigin" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Năm sản xuất</label>
+                                                        <input type="text" class="form-control" id="lYOM" data-spec="15" name="lYOM" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <input name="proGroupId" type="hidden" value="3" />
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="card-footer">
+
+
+                                        <button type="submit" class="btn btn-info float-right">Tạo mới sản phẩm</button>
+                                    </div>
+                                </form>
+                                <!-- /.card-body -->
+                            </div>
+
+                            <!-- Cáp sạc-->
+                            <div id="cg-div" class="card card-success cg-div">
+                                <div class="card-header">
+                                    <h3 class="card-title">Thông tin sản phẩm</h3>
+                                </div>
+                                <form id="cg-form" enctype="multipart/form-data">
+                                    <div class="card-body">
+                                        <h3 class="mt-2 mb-2">Thông tin chi tiết</h3>
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Tên sản phẩm</label>
+                                                    <input type="text" class="form-control" id="cgName" name="proName" placeholder="">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Giá thành</label>
+                                                    <input type="text" class="form-control" id="cgRetailPrice" name="proRetailPrice" placeholder="">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Thương hiệu</label>
+                                                    <select id="cgbrand" name="proBrandId" class="form-control">
+                                                        <option value="" disabled selected hidden></option>
+                                                        <option value="10">Anker</option>
+                                                        <option value="1">Apple</option>
+                                                        <option value="16">Belkin</option>
+                                                        <option value="12">UmeTravel</option>
+                                                        <option value="17">Hyperdrive</option>
+                                                        <option value="11">iValue</option>
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label>Hình sản phẩm</label>
+                                                    <input type="file" class="form-control-file border" id="cgImage" name="proImageStream" accept="image/*" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="spec-info">
+                                            <h3 class="mt-2 mb-2">Thông số kỹ thuật</h3>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Chất liệu</label>
+                                                        <input type="text" class="form-control" id="cgmaterial" data-spec="16" name="cgmaterial" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Cổng cáp kết nối</label>
+                                                        <input type="text" class="form-control" id="cgconnect" data-spec="17" name="cgconnect" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Cường độ dòng điện</label>
+                                                        <input type="text" class="form-control" id="cgamperage" data-spec="18" name="cgamperage" placeholder="">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Độ dài dây cáp</label>
+                                                        <input type="text" class="form-control" id="cgcblengh" data-spec="19" name="cgcblengh" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Loại</label>
+                                                        <input type="text" class="form-control" id="cgtype" data-spec="20" name="cgtype" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Mẫu mã</label>
+                                                        <input type="text" class="form-control" id="cgmodel" data-spec="21" name="cgmodel" placeholder="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Số cổng USB</label>
+                                                        <input type="text" class="form-control" id="cgport" data-spec="22" name="cgport" placeholder="">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Thời gian bảo hành</label>
+                                                        <input type="text" class="form-control" id="cgwarranty" data-spec="13" name="cgwarranty" placeholder="">
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+
+                                            <div class="row">
+
+
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Tính năng</label>
+                                                        <input type="text" class="form-control" id="cgfeature" data-spec="23" name="cgfeature" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Xuất xứ</label>
+                                                        <input type="text" class="form-control" id="cgorigin" data-spec="14" name="cgorigin" placeholder="">
+                                                    </div>
+                                                </div>
+
+                                                <input id="cgGroupId" name="proGroupId" type="hidden" value="2" />
+                                                <input id="cgTypeId" name="proTypeId" type="hidden" value="3" />
+
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                    <div class="card-footer">
+
+                                        <button type="submit" class="btn btn-info float-right">Tạo mới sản phẩm</button>
+                                    </div>
+                                </form>
+                                <!-- /.card-body -->
+                            </div>
+
+
+                            <!-- Tai nghe-->
+                            <div id="hp-div" class="card card-success hp-div">
+                                <div class="card-header">
+                                    <h3 class="card-title">Thông tin sản phẩm</h3>
+                                </div>
+                                <form id="hp-form" enctype="multipart/form-data">
+                                    <div class="card-body">
+                                        <h3 class="mt-2 mb-2">Thông tin chi tiết</h3>
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Tên sản phẩm</label>
+                                                    <input type="text" class="form-control" id="hpName" name="proName" placeholder="">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Giá thành</label>
+                                                    <input type="text" class="form-control" id="hpRetailPrice" name="proRetailPrice" placeholder="">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Hãng sản xuất</label>
+                                                    <select id="hpbrand" name="proBrandId" class="form-control">
+                                                        <option value="" disabled selected hidden></option>
+                                                        <option value="10">Anker</option>
+                                                        <option value="1">Apple</option>
+                                                        <option value="11">iValue</option>
+                                                        <option value="14">Sony</option>
+                                                        <option value="15">JBL</option>
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label>Hình sản phẩm</label>
+                                                    <input type="file" class="form-control-file border" id="hpImage" name="proImageStream" accept="image/*" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="spec-info">
+                                            <h3 class="mt-2 mb-2">Thông số kỹ thuật</h3>
+
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Loại kết nối</label>
+                                                        <input type="text" class="form-control" id="hpconType" data-spec="24" name="hpconType" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Loại tai nghe</label>
+                                                        <input type="text" class="form-control" id="hpType" data-spec="25" name="hpType" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Màu sắc</label>
+                                                        <input type="text" class="form-control" id="hpcolor" data-spec="26" name="hpcolor" placeholder="">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Tần số</label>
+                                                        <input type="text" class="form-control" id="hpfrequency" data-spec="27" name="hpfrequency" placeholder="">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Trở kháng</label>
+                                                        <input type="text" class="form-control" id="hpimpedance" data-spec="28" name="hpimpedance" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Tính năng</label>
+                                                        <input type="text" class="form-control" id="hpfeature" data-spec="23" name="hpfeature" placeholder="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Thời gian bảo hành</label>
+                                                        <input type="text" class="form-control" id="hpwarranty" data-spec="13" name="hpwarranty" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Xuất xứ</label>
+                                                        <input type="text" class="form-control" id="hporigin" data-spec="14" name="hporigin" placeholder="">
+                                                    </div>
+                                                </div>
+
+                                                <input id="hpGroupId" name="proGroupId" type="hidden" value="2" />
+                                                <input id="hpTypeId" name="proTypeId" type="hidden" value="2" />
+
+
+                                            </div>
+
+                                        </div>
+
+
+
+
+                                    </div>
+                                    <div class="card-footer">
+
+
+                                        <button type="submit" class="btn btn-info float-right">Tạo mới sản phẩm</button>
+                                    </div>
+                                </form>
+                                <!-- /.card-body -->
+                            </div>
+
+                            <!--Sạc dự phòng-->
+                            <div id="pb-div" class="card card-success pb-div">
+                                <div class="card-header">
+                                    <h3 class="card-title">Thông tin sản phẩm</h3>
+                                </div>
+                                <form id="pb-form" enctype="multipart/form-data">
+                                    <div class="card-body">
+                                        <h3 class="mt-2 mb-2">Thông tin chi tiết</h3>
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Tên sản phẩm</label>
+                                                    <input type="text" class="form-control" id="pbName" name="proName" placeholder="">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Giá thành</label>
+                                                    <input type="text" class="form-control" id="pbRetailPrice" name="proRetailPrice" placeholder="">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Hãng sản xuất</label>
+                                                    <select id="pbbrand" name="proBrandId" class="form-control">
+                                                        <option value="" selected disabled hidden></option>
+                                                        <option value="10">Anker</option>
+                                                        <option value="11">iValue</option>
+                                                        <option value="12">UmeTravel</option>
+                                                        <option value="13">Veger</option>
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label>Hình sản phẩm</label>
+                                                    <input type="file" class="form-control-file border" id="pbImage" name="proImageStream" accept="image/*" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="spec-info">
+                                            <h3 class="mt-2 mb-2">Thông số kỹ thuật</h3>
+
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Chất liệu</label>
+                                                        <input type="text" class="form-control" id="pbmaterial" data-spec="16" name="pbmaterial" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Cổng nguồn ra</label>
+                                                        <input type="text" class="form-control" id="pbportOut" data-spec="29" name="pbportOut" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Cổng vào</label>
+                                                        <input type="text" class="form-control" id="pbportIn" data-spec="30" name="pbportIn" placeholder="">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Độ bền</label>
+                                                        <input type="text" class="form-control" id="pbreliability" data-spec="31" name="pbreliability" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Dung lượng</label>
+                                                        <input type="text" class="form-control" id="pbcapacity" data-spec="32" name="pbcapacity" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Thời gian sạc</label>
+                                                        <input type="text" class="form-control" id="pbchargeTime" data-spec="33" name="pbchargeTime" placeholder="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Lõi pin</label>
+                                                        <input type="text" class="form-control" id="pbcell" data-spec="34" name="pbcell" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Mẫu mã</label>
+                                                        <input type="text" class="form-control" id="pbmodel" data-spec="21" name="pbmodel" placeholder="">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Màu sắc</label>
+                                                        <input type="text" class="form-control" id="pbcolor" data-spec="26" name="pbcolor" placeholder="">
+                                                    </div>
+                                                </div>
+
+
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Nguồn ra</label>
+                                                        <input type="text" class="form-control" id="pboutput" data-spec="36" name="pboutput" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Nguồn vào</label>
+                                                        <input type="text" class="form-control" id="pbinput" data-spec="37" name="pbinput" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Số cổng ra</label>
+                                                        <input type="text" class="form-control" id="pbportNum" data-spec="38" name="pbportNum" placeholder="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Thời gian bảo hành</label>
+                                                        <input type="text" class="form-control" id="pbwarranty" data-spec="13" name="pbwarranty" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Tính năng</label>
+                                                        <input type="text" class="form-control" id="pbfeature" data-spec="23" name="pbfeature" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Xuất xứ</label>
+                                                        <input type="text" class="form-control" id="pborigin" data-spec="14" name="pborigin" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <input id="pbGroupId" name="proGroupId" type="hidden" value="2" />
+                                                <input id="pbTypeId" name="proTypeId" type="hidden" value="1" />
+                                            </div>
+                                        </div>
+
+
+
+
+                                    </div>
+                                    <div class="card-footer">
+
+                                        <button type="submit" class="btn btn-info float-right">Tạo mới sản phẩm</button>
+                                    </div>
+                                </form>
+                                <!-- /.card-body -->
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+
+
+                </div>
+
+            </div>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+
+@section scripts{
+
+    <script src="~/plugins/jquery-validation/jquery.validate.min.js"></script>
+    <script src="~/plugins/jquery-validation/additional-methods.min.js"></script>
+    <script src="~/js/product/addproduct.js"></script>
+
+
+
+
+
+
+}

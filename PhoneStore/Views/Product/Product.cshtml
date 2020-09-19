@@ -1,0 +1,88 @@
+﻿
+@{
+    ViewData["Title"] = "Product";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using PhoneStore.CustomHandler
+@model PageinatedList<ProductViewModel>
+@section css{
+    <link href="~/styles/categories.css" rel="stylesheet" />
+    <link href="~/styles/categories_responsive.css" rel="stylesheet" />
+}
+<!-- Home -->
+<!-- Products -->
+
+<div class="products">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+
+                <!-- Product Sorting -->
+                <div class="sorting_bar d-flex flex-md-row flex-column align-items-md-center justify-content-md-start">
+                    <div class="results">Showing <span>12</span> results</div>
+                    <div class="sorting_container ml-md-auto">
+                        <div class="sorting">
+                            <ul class="item_sorting">
+                                <li>
+                                    <span class="sorting_text">Sort by</span>
+                                    <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                                    <ul>
+                                        <li class="product_sorting_btn" data-isotope-option='{ "sortBy": "original-order" }'><span>Default</span></li>
+                                        <li class="product_sorting_btn" data-isotope-option='{ "sortBy": "price" }'><span>Price</span></li>
+                                        <li class="product_sorting_btn" data-isotope-option='{ "sortBy": "stars" }'><span>Name</span></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+
+                <div class="product_grid">
+                    @foreach (var item in Model)
+                    {
+                        <div class="product">
+                            <div class="product_image"><img src="~/@item.ProImage" alt="@item.ProName"></div>
+
+                            <div class="product_content">
+                                <div class="product_title"><a href="@Url.Action("ProductInfo", "Product", new { pid = item.ProId })">@item.ProName</a></div>
+                                @if (item.ProSalePrice != null)
+                                {
+                                    <div class="product_price">@Currency.CurrencyFormat(item.ProSalePrice)</div>
+                                }
+                                else
+                                {
+                                    <div class="product_price">@Currency.CurrencyFormat(item.ProRetailPrice)</div>
+                                }
+                            </div>
+                        </div>
+                    }
+                    <!-- Product -->
+
+
+
+                </div>
+               
+                @if (Model.HasNextPage)
+                {
+                    <div class="product_pagination">
+                        <ul>
+
+                            <li><a href="#">Xem them</a></li>
+
+                        </ul>
+                    </div>
+                }
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    <script src="~/js/categories.js"></script>
+}

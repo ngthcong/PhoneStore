@@ -1,0 +1,109 @@
+﻿
+@{
+    Layout = null;
+}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Đăng nhập</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="~/dist/img/login/icons/favicon.ico" />
+    <script type="text/javascript">
+        function preventBack() { window.history.forward(); }
+        setTimeout("preventBack()", 0);
+        window.onunload = function () { null };
+    </script>
+    <!--===============================================================================================-->
+
+    <link href="~/dist/css/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <!--===============================================================================================-->
+
+    <link href="~/fonts/font-awesome-4.7.0/css/font-awesome.css" rel="stylesheet" />
+    <!--===============================================================================================-->
+
+    <link href="~/fonts/iconic/css/material-design-iconic-font.css" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="~/styles/util.css">
+
+    <link rel="stylesheet" type="text/css" href="~/styles/main.css">
+    <!--===============================================================================================-->
+</head>
+<body>
+
+    <div class="limiter">
+        <div class="container-login100" style="background-image: url('@Url.Content("~/dist/img/login/bg-01.jpg")');">
+
+            <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
+                <form id="signupUser" class="login100-form validate-form">
+                    <span class="login100-form-title p-b-49">
+                        Đăng ký
+                    </span>
+
+                    <div class="wrap-input100 validate-input m-b-23">
+                        <span class="label-input100">Họ và Tên</span>
+                        <input class="input100" type="text" id="Name" name="AccName" placeholder="Nhập Họ và Tên">
+                        <span class="focus-input100" data-symbol="&#xf206;"></span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input m-b-23">
+                        <span class="label-input100">Số điện thoại</span>
+                        <input class="input100" type="tel" id="Phone" name="AccPhone" placeholder="Nhập số điện thoại">
+                        <span class="focus-input100" data-symbol="&#xf190;"></span>
+                    </div>
+                    <div class="wrap-input100 validate-input m-b-23">
+                        <span class="label-input100">Email</span>
+                        <input class="input100" type="email" id="Email" name="AccEmail" placeholder="Nhập Email">
+                        <span class="focus-input100" data-symbol="&#xf190;"></span>
+                    </div>
+                    <div class="wrap-input100 validate-input m-b-23">
+                        <span class="label-input100">Mật khẩu</span>
+                        <input class="input100" type="password" id="Pass" name="AccPass" placeholder="Nhập mật khẩu">
+                        <span class="focus-input100" data-symbol="&#xf190;"></span>
+                    </div>
+                    <div class="wrap-input100 validate-input">
+                        <span class="label-input100">Nhập lại mật khẩu</span>
+                        <input class="input100" type="password" id="RePass" name="RePass" placeholder="Nhập lại mật khẩu">
+                        <span class="focus-input100" data-symbol="&#xf190;"></span>
+                    </div>
+
+
+
+                    <div class="container-login100-form-btn p-t-20">
+                        <div class="wrap-login100-form-btn">
+                            <div class="login100-form-bgbtn"></div>
+                            <button type="submit" class="login100-form-btn">
+                                Đăng ký
+                            </button>
+                        </div>
+                    </div>
+                    <div class="flex-col-c p-t-50">
+                        <span class="txt1 p-b-17">
+                            Hoặc bạn đã có tài khoản
+                        </span>
+
+                        <a href="#" class="txt2">
+                            Đăng nhập
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!--===============================================================================================-->
+    
+    <script src="~/plugins/jquery/jquery.min.js"></script>
+    <script src="~/plugins/bootstrap/popper.js"></script>
+
+    <script src="~/plugins/bootstrap/js/bootstrap.js"></script>
+    <script src="~/plugins/bootstrap/popper.js"></script>
+    <script src="~/plugins/jquery-validation/jquery.validate.js"></script>
+    <script src="~/js/signup.js"></script>
+</body>
+</html>
