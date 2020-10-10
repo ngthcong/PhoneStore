@@ -15,14 +15,12 @@ namespace PhoneStore.Data
         {
         }
 
-        public virtual DbSet<AccBasket> AccBasket { get; set; }
         public virtual DbSet<AccRole> AccRole { get; set; }
         public virtual DbSet<Account> Account { get; set; }
         public virtual DbSet<AddressCity> AddressCity { get; set; }
         public virtual DbSet<AddressDistrict> AddressDistrict { get; set; }
         public virtual DbSet<AddressWard> AddressWard { get; set; }
         public virtual DbSet<BrandGroup> BrandGroup { get; set; }
-        public virtual DbSet<Comment> Comment { get; set; }
         public virtual DbSet<Invoice> Invoice { get; set; }
         public virtual DbSet<InvoiceDetail> InvoiceDetail { get; set; }
         public virtual DbSet<ProBrand> ProBrand { get; set; }
@@ -32,7 +30,6 @@ namespace PhoneStore.Data
         public virtual DbSet<ProVariant> ProVariant { get; set; }
         public virtual DbSet<ProView> ProView { get; set; }
         public virtual DbSet<Product> Product { get; set; }
-        public virtual DbSet<Rating> Rating { get; set; }
         public virtual DbSet<Specification> Specification { get; set; }
         public virtual DbSet<VarImages> VarImages { get; set; }
 
@@ -40,48 +37,15 @@ namespace PhoneStore.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-   }
+ }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<AccBasket>(entity =>
-            {
-                entity.HasKey(e => e.BasketId)
-                    .HasName("PK__acc_bask__65E4F9F099F1E19E");
-
-                entity.ToTable("acc_basket");
-
-                entity.Property(e => e.BasketId).HasColumnName("basket_id");
-
-                entity.Property(e => e.AccId).HasColumnName("acc_id");
-
-                entity.Property(e => e.ProId).HasColumnName("pro_id");
-
-                entity.Property(e => e.Qty).HasColumnName("qty");
-
-                entity.Property(e => e.VarId).HasColumnName("var_id");
-
-                entity.HasOne(d => d.Acc)
-                    .WithMany(p => p.AccBasket)
-                    .HasForeignKey(d => d.AccId)
-                    .HasConstraintName("fk_cus_basket_acc_id");
-
-                entity.HasOne(d => d.Pro)
-                    .WithMany(p => p.AccBasket)
-                    .HasForeignKey(d => d.ProId)
-                    .HasConstraintName("fk_cus_basket_pro_id");
-
-                entity.HasOne(d => d.Var)
-                    .WithMany(p => p.AccBasket)
-                    .HasForeignKey(d => d.VarId)
-                    .HasConstraintName("fk_cus_basket_var_id");
-            });
-
             modelBuilder.Entity<AccRole>(entity =>
             {
                 entity.HasKey(e => e.RoleId)
-                    .HasName("PK__acc_role__760965CC1A5AC8C7");
+                    .HasName("PK__acc_role__760965CC111BE82E");
 
                 entity.ToTable("acc_role");
 
@@ -95,23 +59,15 @@ namespace PhoneStore.Data
             modelBuilder.Entity<Account>(entity =>
             {
                 entity.HasKey(e => e.AccId)
-                    .HasName("PK__account__9A20D554ADB66FC6");
+                    .HasName("PK__account__9A20D554BD639B3E");
 
                 entity.ToTable("account");
 
                 entity.Property(e => e.AccId).HasColumnName("acc_id");
 
-                entity.Property(e => e.AccAddressNumber)
-                    .HasColumnName("acc_address_number")
+                entity.Property(e => e.AccAddress)
+                    .HasColumnName("acc_address")
                     .HasMaxLength(100);
-
-                entity.Property(e => e.AccBirthday)
-                    .HasColumnName("acc_birthday")
-                    .HasColumnType("date");
-
-                entity.Property(e => e.AccCityId).HasColumnName("acc_city_id");
-
-                entity.Property(e => e.AccDistrictId).HasColumnName("acc_district_id");
 
                 entity.Property(e => e.AccEmail)
                     .HasColumnName("acc_email")
@@ -123,11 +79,11 @@ namespace PhoneStore.Data
 
                 entity.Property(e => e.AccNote)
                     .HasColumnName("acc_note")
-                    .HasMaxLength(500);
+                    .HasMaxLength(200);
 
                 entity.Property(e => e.AccPass)
                     .HasColumnName("acc_pass")
-                    .HasMaxLength(300)
+                    .HasMaxLength(64)
                     .IsUnicode(false);
 
                 entity.Property(e => e.AccPhone)
@@ -150,16 +106,6 @@ namespace PhoneStore.Data
                     .HasColumnName("date_created")
                     .HasColumnType("datetime");
 
-                entity.HasOne(d => d.AccCity)
-                    .WithMany(p => p.Account)
-                    .HasForeignKey(d => d.AccCityId)
-                    .HasConstraintName("fk_account_city_id");
-
-                entity.HasOne(d => d.AccDistrict)
-                    .WithMany(p => p.Account)
-                    .HasForeignKey(d => d.AccDistrictId)
-                    .HasConstraintName("fk_account_district_id");
-
                 entity.HasOne(d => d.AccRole)
                     .WithMany(p => p.Account)
                     .HasForeignKey(d => d.AccRoleId)
@@ -174,7 +120,7 @@ namespace PhoneStore.Data
             modelBuilder.Entity<AddressCity>(entity =>
             {
                 entity.HasKey(e => e.CityId)
-                    .HasName("PK__address___031491A8585F1C92");
+                    .HasName("PK__address___031491A8CD9F9942");
 
                 entity.ToTable("address_city");
 
@@ -190,7 +136,7 @@ namespace PhoneStore.Data
             modelBuilder.Entity<AddressDistrict>(entity =>
             {
                 entity.HasKey(e => e.DistrictId)
-                    .HasName("PK__address___2521322B054DEA5F");
+                    .HasName("PK__address___2521322B639425FF");
 
                 entity.ToTable("address_district");
 
@@ -213,7 +159,7 @@ namespace PhoneStore.Data
             modelBuilder.Entity<AddressWard>(entity =>
             {
                 entity.HasKey(e => e.WardId)
-                    .HasName("PK__address___396B899D243CE4D6");
+                    .HasName("PK__address___396B899D673989E3");
 
                 entity.ToTable("address_ward");
 
@@ -245,6 +191,11 @@ namespace PhoneStore.Data
 
                 entity.Property(e => e.TypeId).HasColumnName("type_id");
 
+                entity.HasOne(d => d.Brand)
+                    .WithMany(p => p.BrandGroup)
+                    .HasForeignKey(d => d.BrandId)
+                    .HasConstraintName("fk_brand_group_brand_id");
+
                 entity.HasOne(d => d.Group)
                     .WithMany(p => p.BrandGroup)
                     .HasForeignKey(d => d.GroupId)
@@ -256,64 +207,10 @@ namespace PhoneStore.Data
                     .HasConstraintName("fk_brand_group_type_id");
             });
 
-            modelBuilder.Entity<Comment>(entity =>
-            {
-                entity.HasKey(e => e.ComId)
-                    .HasName("PK__comment__5066738C7723028A");
-
-                entity.ToTable("comment");
-
-                entity.Property(e => e.ComId).HasColumnName("com_id");
-
-                entity.Property(e => e.ComAccId).HasColumnName("com_acc_id");
-
-                entity.Property(e => e.ComCusPhone)
-                    .HasColumnName("com_cus_phone")
-                    .HasMaxLength(10)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.ComStatus).HasColumnName("com_status");
-
-                entity.Property(e => e.ComText)
-                    .HasColumnName("com_text")
-                    .HasMaxLength(1000);
-
-                entity.Property(e => e.ComTime)
-                    .HasColumnName("com_time")
-                    .HasColumnType("datetime");
-
-                entity.Property(e => e.ConCusName)
-                    .HasColumnName("con_cus_name")
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.ConNote)
-                    .HasColumnName("con_note")
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.ParentId).HasColumnName("parent_id");
-
-                entity.Property(e => e.ProId).HasColumnName("pro_id");
-
-                entity.HasOne(d => d.ComAcc)
-                    .WithMany(p => p.Comment)
-                    .HasForeignKey(d => d.ComAccId)
-                    .HasConstraintName("fk_comment_acc_id");
-
-                entity.HasOne(d => d.Parent)
-                    .WithMany(p => p.InverseParent)
-                    .HasForeignKey(d => d.ParentId)
-                    .HasConstraintName("fk_comment_parent_id");
-
-                entity.HasOne(d => d.Pro)
-                    .WithMany(p => p.Comment)
-                    .HasForeignKey(d => d.ProId)
-                    .HasConstraintName("fk_comment_pro_id");
-            });
-
             modelBuilder.Entity<Invoice>(entity =>
             {
                 entity.HasKey(e => e.InvId)
-                    .HasName("PK__invoice__A8749C297CC2AE10");
+                    .HasName("PK__invoice__A8749C29BA65DF76");
 
                 entity.ToTable("invoice");
 
@@ -330,8 +227,6 @@ namespace PhoneStore.Data
                 entity.Property(e => e.InvAddress)
                     .HasColumnName("inv_address")
                     .HasMaxLength(100);
-
-                entity.Property(e => e.InvCityId).HasColumnName("inv_city_id");
 
                 entity.Property(e => e.InvCusEmail)
                     .HasColumnName("inv_cus_email")
@@ -351,17 +246,13 @@ namespace PhoneStore.Data
 
                 entity.Property(e => e.InvDeliveryMethod).HasColumnName("inv_delivery_method");
 
-                entity.Property(e => e.InvDistrictId).HasColumnName("inv_district_id");
-
                 entity.Property(e => e.InvNote)
                     .HasColumnName("inv_note")
                     .HasMaxLength(200);
 
                 entity.Property(e => e.InvPaymentMethod).HasColumnName("inv_payment_method");
 
-                entity.Property(e => e.InvStatus)
-                    .HasColumnName("inv_status")
-                    .HasMaxLength(40);
+                entity.Property(e => e.InvStatus).HasColumnName("inv_status");
 
                 entity.Property(e => e.InvWardId).HasColumnName("inv_ward_id");
 
@@ -375,16 +266,6 @@ namespace PhoneStore.Data
                     .HasForeignKey(d => d.EmId)
                     .HasConstraintName("fk_invoice_em_id");
 
-                entity.HasOne(d => d.InvCity)
-                    .WithMany(p => p.Invoice)
-                    .HasForeignKey(d => d.InvCityId)
-                    .HasConstraintName("fk_invoice_city_id");
-
-                entity.HasOne(d => d.InvDistrict)
-                    .WithMany(p => p.Invoice)
-                    .HasForeignKey(d => d.InvDistrictId)
-                    .HasConstraintName("fk_invoice_district_id");
-
                 entity.HasOne(d => d.InvWard)
                     .WithMany(p => p.Invoice)
                     .HasForeignKey(d => d.InvWardId)
@@ -394,7 +275,7 @@ namespace PhoneStore.Data
             modelBuilder.Entity<InvoiceDetail>(entity =>
             {
                 entity.HasKey(e => e.InvDetailId)
-                    .HasName("PK__invoice___5506AA2C630539D4");
+                    .HasName("PK__invoice___5506AA2C01FF3AAF");
 
                 entity.ToTable("invoice_detail");
 
@@ -413,6 +294,7 @@ namespace PhoneStore.Data
                 entity.HasOne(d => d.Inv)
                     .WithMany(p => p.InvoiceDetail)
                     .HasForeignKey(d => d.InvId)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("fk_invoice_detail_inv_id");
 
                 entity.HasOne(d => d.Pro)
@@ -429,7 +311,7 @@ namespace PhoneStore.Data
             modelBuilder.Entity<ProBrand>(entity =>
             {
                 entity.HasKey(e => e.BrandId)
-                    .HasName("PK__pro_bran__5E5A8E2719E7F75D");
+                    .HasName("PK__pro_bran__5E5A8E2760CC6A5B");
 
                 entity.ToTable("pro_brand");
 
@@ -447,7 +329,7 @@ namespace PhoneStore.Data
             modelBuilder.Entity<ProGroup>(entity =>
             {
                 entity.HasKey(e => e.GroupId)
-                    .HasName("PK__pro_grou__D57795A086758C17");
+                    .HasName("PK__pro_grou__D57795A0B27418F7");
 
                 entity.ToTable("pro_group");
 
@@ -475,6 +357,7 @@ namespace PhoneStore.Data
                 entity.HasOne(d => d.Pro)
                     .WithMany(p => p.ProSpecification)
                     .HasForeignKey(d => d.ProId)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("fk_pro_specification_pro_id");
 
                 entity.HasOne(d => d.Spec)
@@ -486,7 +369,7 @@ namespace PhoneStore.Data
             modelBuilder.Entity<ProType>(entity =>
             {
                 entity.HasKey(e => e.TypeId)
-                    .HasName("PK__pro_type__2C00059890CD92FF");
+                    .HasName("PK__pro_type__2C000598F09D160D");
 
                 entity.ToTable("pro_type");
 
@@ -507,7 +390,7 @@ namespace PhoneStore.Data
             modelBuilder.Entity<ProVariant>(entity =>
             {
                 entity.HasKey(e => e.VarId)
-                    .HasName("PK__pro_vari__0586E27E39E05C33");
+                    .HasName("PK__pro_vari__0586E27E9BC9D3B6");
 
                 entity.ToTable("pro_variant");
 
@@ -535,6 +418,7 @@ namespace PhoneStore.Data
                 entity.HasOne(d => d.Pro)
                     .WithMany(p => p.ProVariant)
                     .HasForeignKey(d => d.ProId)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("fk_pro_variant_pro_id");
             });
 
@@ -561,13 +445,14 @@ namespace PhoneStore.Data
                 entity.HasOne(d => d.Pro)
                     .WithMany(p => p.ProView)
                     .HasForeignKey(d => d.ProId)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("fk_pro_view_pro_id");
             });
 
             modelBuilder.Entity<Product>(entity =>
             {
                 entity.HasKey(e => e.ProId)
-                    .HasName("PK__product__335E4CA6F73AC91C");
+                    .HasName("PK__product__335E4CA67BAD3763");
 
                 entity.ToTable("product");
 
@@ -615,53 +500,10 @@ namespace PhoneStore.Data
                     .HasConstraintName("fk_product_type");
             });
 
-            modelBuilder.Entity<Rating>(entity =>
-            {
-                entity.HasKey(e => e.RaId)
-                    .HasName("PK__rating__1ADCB59F99335D74");
-
-                entity.ToTable("rating");
-
-                entity.Property(e => e.RaId).HasColumnName("ra_id");
-
-                entity.Property(e => e.ProId).HasColumnName("pro_id");
-
-                entity.Property(e => e.RaAccId).HasColumnName("ra_acc_id");
-
-                entity.Property(e => e.RaCusName)
-                    .HasColumnName("ra_cus_name")
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.RaCusPhone)
-                    .HasColumnName("ra_cus_phone")
-                    .HasMaxLength(10)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.RaPoint).HasColumnName("ra_point");
-
-                entity.Property(e => e.RaText)
-                    .HasColumnName("ra_text")
-                    .HasMaxLength(1000);
-
-                entity.Property(e => e.RaTime)
-                    .HasColumnName("ra_time")
-                    .HasColumnType("datetime");
-
-                entity.HasOne(d => d.Pro)
-                    .WithMany(p => p.Rating)
-                    .HasForeignKey(d => d.ProId)
-                    .HasConstraintName("fk_cus_rating_pro_id");
-
-                entity.HasOne(d => d.RaAcc)
-                    .WithMany(p => p.Rating)
-                    .HasForeignKey(d => d.RaAccId)
-                    .HasConstraintName("fk_rating_acc_id");
-            });
-
             modelBuilder.Entity<Specification>(entity =>
             {
                 entity.HasKey(e => e.SpecId)
-                    .HasName("PK__specific__F670C5672DE6227A");
+                    .HasName("PK__specific__F670C567A89E0154");
 
                 entity.ToTable("specification");
 
@@ -675,18 +517,18 @@ namespace PhoneStore.Data
             modelBuilder.Entity<VarImages>(entity =>
             {
                 entity.HasKey(e => e.ImgId)
-                    .HasName("PK__var_imag__6F16A71C5933A444");
+                    .HasName("PK__var_imag__6F16A71C50201105");
 
                 entity.ToTable("var_images");
 
                 entity.Property(e => e.ImgId).HasColumnName("img_id");
 
+                entity.Property(e => e.ImgIndex).HasColumnName("img_index");
+
                 entity.Property(e => e.ImgPath)
                     .HasColumnName("img_path")
                     .HasMaxLength(200)
                     .IsUnicode(false);
-
-                entity.Property(e => e.Index).HasColumnName("index");
 
                 entity.Property(e => e.VarId).HasColumnName("var_id");
 

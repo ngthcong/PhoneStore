@@ -1150,7 +1150,32 @@ section {
     display: inline-block;
     vertical-align: middle;
     margin-left: 13px;
+
 }
+    .cart_button span {
+        display: block;
+        position: relative;
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 57px;
+        color: #1b1b1b;
+        background: none;
+        z-index: 1;
+        -webkit-transition: all 200ms ease;
+        -moz-transition: all 200ms ease;
+        -ms-transition: all 200ms ease;
+        -o-transition: all 200ms ease;
+        transition: all 200ms ease;
+    }
+        .cart_button span:hover {
+            text-decoration: none;
+            -webkit-font-smoothing: antialiased;
+            -webkit-text-shadow: rgba(0,0,0,.01) 0 0 1px;
+            text-shadow: rgba(0,0,0,.01) 0 0 1px;
+            color: white;
+        }
+
+
 
     .cart_button::after {
         background: #1b1b1b;

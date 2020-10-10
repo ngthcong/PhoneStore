@@ -7,6 +7,7 @@ namespace PhoneStore.Data
     {
         public ProBrand()
         {
+            BrandGroup = new HashSet<BrandGroup>();
             Product = new HashSet<Product>();
         }
 
@@ -14,6 +15,7 @@ namespace PhoneStore.Data
         public string BrandName { get; set; }
         public string BrandLogo { get; set; }
 
+        public virtual ICollection<BrandGroup> BrandGroup { get; set; }
         public virtual ICollection<Product> Product { get; set; }
     }
 }

@@ -169,6 +169,10 @@ $(document).ready(function () {
             var pid = $(this).data('pid');
             ajaxCart(pid, true)
         });
+        cartinfo.on('click', '.delete-item', function () {
+            var pid = $(this).data('pid');
+            ajaxDelete(pid)
+        });
 
         cartinfo.on('click', '.quantity_dec', function () {
             var pid = $(this).data('pid');
@@ -206,6 +210,7 @@ $(document).ready(function () {
 
         form.submit(function (e) {
             e.preventDefault();
+            e.stopImmediatePropagation();
             ajaxCheckOut();
         })
 
@@ -239,6 +244,34 @@ $(document).ready(function () {
             }
         });
     }
+
+    function ajaxDelete(pid) {
+        var cart_container = $("#cart_container");
+        var data = new FormData();
+        data.append("pid", pid);
+        $.ajax({
+            url: "/product/DeleteFromCart",
+            type: "post",
+            cache: false,
+            data: data,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+
+                console.log((response.isSuccess));
+                if (response.isSuccess === true) {
+                    $.get(response.data, function (data) {
+                        cart_container.replaceWith(data);
+                    });
+                    RefreshCartEventListener()
+                }
+            },
+            error: function (xhr, error, status) {
+                console.log(error, status);
+            }
+        });
+    }
+
     function ajaxVariant(pid, vid) {
         var cart_container = $("#cart_container");
         var data = new FormData();
@@ -336,7 +369,7 @@ $(document).ready(function () {
 
 
 
-
+    var url = "";
  
 
     function ajaxCheckOut() {
@@ -417,34 +450,43 @@ $(document).ready(function () {
            
             console.log(formData.get('InvCusName'))
 
-            //$.ajax({
-            //    url: "/product/checkout",
-            //    type: "post",
-            //    data: data,
-            //    cache: false,
-            //    contentType: false,
-            //    processData: false,
-            //    success: function (response) {
-            //        console.log(response.isSuccess)
-            //        if (response.isSuccess === false) {
+            $.ajax({
+                url: "/product/checkout",
+                type: "post",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    console.log(response.isSuccess)
+                    if (response.isSuccess === false) {
 
-            //            alert(response.message)
-            //        }
-            //        if (response.isSuccess === true) {
-            //            window.location = response.data;
-            //        }
-            //    },
-            //    error: function (xhr, error, status) {
-            //        console.log(error, status);
-            //    }
-            //});
+                        alert(response.message)
+                    }
+                    if (response.isSuccess === true) {
+                        var message = response.message;
+                        var array = message.split(".");
+                        $('#model-text1').text(array[0])
+                        $('#model-text2').text(array[1])
+
+                        $('#modal-default').modal('show');
+                        url =  response.data;
+                    }
+                },
+                error: function (xhr, error, status) {
+                    console.log(error, status);
+                }
+            });
         }
 
 
 
-      
+        hidden.bs.modal
 
     }
+    $('#modal-default').on('hidden.bs.modal', function (event) {
+        window.location = url;
+    })
 
 
     function RefreshCartEventListener() {
@@ -460,7 +502,7 @@ $(document).ready(function () {
 
         cartinfo.on('submit', '#checkout-form', function (e) {
             e.preventDefault();
-            
+            e.stopImmediatePropagation();
             ajaxCheckOut();
         });
        
@@ -485,6 +527,10 @@ $(document).ready(function () {
         cartinfo.on('change', '#district', function () {
             ajaxWard($(this).val())
         })
+        cartinfo.on('click', '.delete-item', function () {
+            var pid = $(this).data('pid');
+            ajaxDelete(pid)
+        });
     }
 
 

@@ -11,8 +11,6 @@ namespace PhoneStore.Models.FormModel
         public string InvCusName { get; set; }
         public string InvCusPhone { get; set; }
         public string InvCusEmail { get; set; }
-        public int? InvCityId { get; set; }
-        public int? InvDistrictId { get; set; }
         public int? InvWardId { get; set; }
         public string InvAddress { get; set; }
         public int? InvPaymentMethod { get; set; }

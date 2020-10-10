@@ -7,7 +7,6 @@ namespace PhoneStore.Data
     {
         public ProVariant()
         {
-            AccBasket = new HashSet<AccBasket>();
             InvoiceDetail = new HashSet<InvoiceDetail>();
             VarImages = new HashSet<VarImages>();
         }
@@ -21,7 +20,6 @@ namespace PhoneStore.Data
         public DateTime? DateCreated { get; set; }
 
         public virtual Product Pro { get; set; }
-        public virtual ICollection<AccBasket> AccBasket { get; set; }
         public virtual ICollection<InvoiceDetail> InvoiceDetail { get; set; }
         public virtual ICollection<VarImages> VarImages { get; set; }
     }

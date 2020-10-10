@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using PhoneStore.Data;
 using PhoneStore.Models;
 using PhoneStore.Models.FormModel;
 using PhoneStore.Models.Response;
@@ -17,15 +18,16 @@ namespace PhoneStore.Interfaces.Services
         void AddVariant(VariantModel v);
         void AddDescription(DescriptionModel des);
         ProtNameViewModel GetProName(int pid);
-        IEnumerable<ProductViewModel> GetAllProduct();
-        IEnumerable<ProductViewModel> GetProducts(int gid);
-        IEnumerable<ProductViewModel> GetProductsByType(int gid, int tid);
-        IEnumerable<ProductViewModel> GetProductsByBrand(int gid, int bid);
+        ICollection<Product> GetAllProduct();
+        Product GetProduct(int gid);
+        ICollection<Product> GetProductsByType(int gid, int tid);
+        ICollection<Product> GetProductsByBrand(int gid, int? tid, int bid);
+        ICollection<Product> GetProductsByGroup(int gid);
         ProductInfoViewModel GetProductInfo(int pid);
-        IEnumerable<ImageViewModel> GetProductImage(int vid);
-        IEnumerable<CityViewModel> GetCities();
-        Response<IEnumerable<DistrictViewModel>>  GetDistricts(int cid);
-        Response<IEnumerable<WardViewModel>> GetWards(int did);
+        ICollection<VarImages> GetProductImage(int vid);
+        ICollection<CityViewModel> GetCities();
+        Response<ICollection<DistrictViewModel>> GetDistricts(int cid);
+        Response<ICollection<WardViewModel>> GetWards(int did);
 
         HeaderViewModel GetMenu();
 

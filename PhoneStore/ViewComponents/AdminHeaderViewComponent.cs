@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PhoneStore.Data;
 using PhoneStore.Interfaces.Services;
 using PhoneStore.Models.ViewModel.User;
 using System;
@@ -24,7 +25,7 @@ namespace PhoneStore.ViewComponents
             var user = User as ClaimsPrincipal;
             string userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            UserViewModel userModel = _userService.GetUserInfo(Int32.Parse(userId));
+            Account userModel = _userService.GetUser(Int32.Parse(userId));
             return View(userModel);
         }
     }

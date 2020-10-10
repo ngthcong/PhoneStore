@@ -10,6 +10,7 @@ namespace PhoneStore.Data
         public int? TypeId { get; set; }
         public int? BrandId { get; set; }
 
+        public virtual ProBrand Brand { get; set; }
         public virtual ProGroup Group { get; set; }
         public virtual ProType Type { get; set; }
     }

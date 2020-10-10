@@ -281,13 +281,13 @@ $(document).ready(function () {
 
                         console.log((response.isSuccess));
                         if (response.isSuccess === true) {
-                            $(".details_image_large img").attr('src',"/" + response.data[0].image);
+                            $(".details_image_large img").attr('src', "/" + response.data[0].imgPath);
                             var length = response.data.length;
                             var data = response.data;
                             for (var i = 0; i < length; i++) {
-                                console.log(data[i].index);
-                                $("#image_" + data[i].index).data("image","/"+ data[i].image)
-                                $("#image_" + data[i].index).find("img").attr("src","/"+ data[i].image)
+                                console.log(data[i].imgIndex);
+                                $("#image_" + data[i].imgIndex).data("image", "/" + data[i].imgPath)
+                                $("#image_" + data[i].imgIndex).find("img").attr("src", "/" + data[i].imgPath)
                             }
                         }
                     },

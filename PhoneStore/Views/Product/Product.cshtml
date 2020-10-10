@@ -4,7 +4,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @using PhoneStore.CustomHandler
-@model PageinatedList<ProductViewModel>
+@using PhoneStore.Data
+@model PageinatedList<Product>
 @section css{
     <link href="~/styles/categories.css" rel="stylesheet" />
     <link href="~/styles/categories_responsive.css" rel="stylesheet" />

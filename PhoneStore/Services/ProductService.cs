@@ -122,7 +122,7 @@ namespace PhoneStore.Services
                 {
                     ImgPath = UploadImageAsync(v.proColorImage[i]),
                     VarId = proVariant.VarId,
-                    Index = i + 1,
+                    ImgIndex = i + 1,
                 };
                 _repo.AddVariantImages(varImages);
                 _repo.SaveChanges();
@@ -168,58 +168,59 @@ namespace PhoneStore.Services
 
 
 
-        public IEnumerable<ProductViewModel> GetAllProduct()
+        public ICollection<Product> GetAllProduct()
         {
-            IEnumerable<ProductViewModel> productList = _mapper.Map<IEnumerable<ProductViewModel>>(_repo.GetAllProduct());
-            return productList;
+            return _repo.GetAllProducts();
+            
         }
 
         public HeaderViewModel GetMenu()
         {
             HeaderViewModel menu = new HeaderViewModel()
             {
-                brands = _mapper.Map<IEnumerable<BrandViewModel>>(_repo.GetBrand(1)),
-                types = _mapper.Map<IEnumerable<TypeViewModel>>(_repo.GetType(2))
+                Phone = _repo.GetGroup(1),
+                Accesscories = _repo.GetGroup(2)
             };
             return menu;
         }
 
-        public IEnumerable<ProductViewModel> GetProducts(int gid)
+        public Product GetProduct(int gid)
         {
-            IEnumerable<ProductViewModel> productList = _mapper.Map<IEnumerable<ProductViewModel>>(_repo.GetProducts(gid, true));
-            return productList;
+           return _repo.GetProduct(gid);
+        }
+        public ICollection<Product> GetAllProducts()
+        {
+            return _repo.GetAllProducts();
         }
 
-        public IEnumerable<ProductViewModel> GetProductsByType(int gid, int tid)
+        public ICollection<Product> GetProductsByType(int gid, int tid)
         {
-            IEnumerable<ProductViewModel> productList = _mapper.Map<IEnumerable<ProductViewModel>>(_repo.GetProducts(gid, tid, true));
-            return productList;
+           return _repo.GetProductsByType(gid, tid);
+        }
+        public ICollection<Product> GetProductsByGroup(int gid)
+        {
+           return _repo.GetProductsByGroup(gid);
+        }
+        public ICollection<Product> GetProductsByBrand(int gid,int? tid, int bid)
+        {
+           return _repo.GetProductsByBrand(gid, null, bid);
         }
 
-        public IEnumerable<ImageViewModel> GetProductImage(int vid)
+        public ICollection<VarImages> GetProductImage(int vid)
         {
-            IEnumerable<ImageViewModel> imageList = _mapper.Map<IEnumerable<ImageViewModel>>(_repo.GetVariantImage(vid, true));
-
-
-
-
-
-            return imageList;
+           return _repo.GetVariantImage(vid);
+         
         }
 
         public ProductInfoViewModel GetProductInfo(int pid)
         {
-            IEnumerable<VariantViewModel> _variant = _mapper.Map<IEnumerable<VariantViewModel>>(_repo.GetProVariant(pid, true));
-
-
-            int _varid = _variant.OrderBy(i => i.VarId).Select(i => i.VarId).FirstOrDefault();
+            var product = _repo.GetProduct(pid);
             ProductInfoViewModel model = new ProductInfoViewModel()
             {
 
-                pro = _mapper.Map<ProductViewModel>(_repo.GetProductById(pid, true)),
-                spec = _mapper.Map<IEnumerable<SpecViewModel>>(_repo.GetProductSpec(pid)),
-                variant = _variant,
-                imageList = _mapper.Map<IEnumerable<ImageViewModel>>(_repo.GetVariantImage(_varid, true))
+                Product = product,
+                ImageList = _repo.GetVariantImage(product.ProVariant.First().VarId),
+                Related = _repo.GetRelatedProducts(_repo.GetProduct(pid))
             };
 
             return model;
@@ -289,28 +290,16 @@ namespace PhoneStore.Services
             return Path.Combine(dir, uniqueFileName); ;
         }
 
-        public IEnumerable<ProductViewModel> GetPhoneByBrand(int bid, bool s)
+        public ICollection<CityViewModel> GetCities()
         {
-            IEnumerable<ProductViewModel> productList = _mapper.Map<IEnumerable<ProductViewModel>>(_repo.GetPhoneByBrand(bid, s));
-            return productList;
-        }
-
-        public IEnumerable<ProductViewModel> GetProductsByBrand(int gid, int bid)
-        {
-            IEnumerable<ProductViewModel> productList = _mapper.Map<IEnumerable<ProductViewModel>>(_repo.GetProductsByBrand(gid, bid, true));
-            return productList;
-        }
-
-        public IEnumerable<CityViewModel> GetCities()
-        {
-            IEnumerable<CityViewModel> citiesList = _mapper.Map<IEnumerable<CityViewModel>>(_repo.GetCities());
+            ICollection<CityViewModel> citiesList = _mapper.Map<ICollection<CityViewModel>>(_repo.GetCities());
             return citiesList;
         }
 
-        public Response<IEnumerable<DistrictViewModel>> GetDistricts(int cid)
+        public Response<ICollection<DistrictViewModel>> GetDistricts(int cid)
         {
-            IEnumerable<DistrictViewModel> districtList = _mapper.Map<IEnumerable<DistrictViewModel>>(_repo.GetDistricts(cid));
-            Response<IEnumerable<DistrictViewModel>> res = new Response<IEnumerable<DistrictViewModel>>()
+            ICollection<DistrictViewModel> districtList = _mapper.Map<ICollection<DistrictViewModel>>(_repo.GetDistricts(cid));
+            Response<ICollection<DistrictViewModel>> res = new Response<ICollection<DistrictViewModel>>()
             {
                 IsSuccess = true,
                 Code = "200",
@@ -320,10 +309,10 @@ namespace PhoneStore.Services
             return res;
         }
 
-        public Response<IEnumerable<WardViewModel>> GetWards(int did)
+        public Response<ICollection<WardViewModel>> GetWards(int did)
         {
-            IEnumerable<WardViewModel> wardList = _mapper.Map<IEnumerable<WardViewModel>>(_repo.GetWards(did));
-            Response<IEnumerable<WardViewModel>> res = new Response<IEnumerable<WardViewModel>>()
+            ICollection<WardViewModel> wardList = _mapper.Map<ICollection<WardViewModel>>(_repo.GetWards(did));
+            Response<ICollection<WardViewModel>> res = new Response<ICollection<WardViewModel>>()
             {
                 IsSuccess = true,
                 Code = "200",

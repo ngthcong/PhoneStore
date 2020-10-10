@@ -1,4 +1,5 @@
-﻿using PhoneStore.CustomHandler;
+﻿using Microsoft.EntityFrameworkCore;
+using PhoneStore.CustomHandler;
 using PhoneStore.Data;
 using PhoneStore.Interfaces.Repository;
 using PhoneStore.Models.FormModel;
@@ -30,12 +31,12 @@ namespace PhoneStore.Repository
              _context.Account.Add(newacc);
         }
 
-        public Account GetUserAccount(LoginModel model)
+        public Account GetAccountByEmail(LoginModel model)
         {
             return _context.Account.Where(i => i.AccEmail == model.Email).FirstOrDefault();
         }
 
-        public Account GetUserInfo(int aid)
+        public Account GetUser(int aid)
         {
             return _context.Account.Where(i => i.AccId == aid).FirstOrDefault();
         }

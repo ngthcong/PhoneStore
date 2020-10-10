@@ -2,7 +2,7 @@
 @{
     Layout = null;
 }
-@model PhoneStore.Models.ViewModel.User.UserViewModel
+@model PhoneStore.Data.Account
 
 @if (Model != null)
 {
@@ -15,22 +15,9 @@
             <li class="nav-item d-none d-sm-inline-block">
                 <a href=" @Url.Action("Index","Admin")" class="nav-link">Home</a>
             </li>
-            <li class="nav-item d-none d-sm-inline-block">
-                <a href="#" class="nav-link">Contact</a>
-            </li>
+          
         </ul>
 
-        <!-- SEARCH FORM -->
-        <form class="form-inline ml-3">
-            <div class="input-group input-group-sm">
-                <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-                <div class="input-group-append">
-                    <button class="btn btn-navbar" type="submit">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
-            </div>
-        </form>
 
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
@@ -39,21 +26,19 @@
             <li class="nav-item dropdown user-menu">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
 
-                    <img src="" class="user-image img-circle elevation-2" style="width:35px;height:35px" alt="User Image">
+                   
                     <span class="d-none d-md-inline">@Model.AccName</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                     <!-- User image -->
                     <li class="user-header bg-primary">
-                        <img src="~/userimage/20_3009.jpg" class="img-circle elevation-2" style="width:100px;height:100px" alt="User Image">
-
                         <p>
                             Admin
                         </p>
                     </li>
 
                     <!-- Menu Footer-->
-                    <li class="user-footer">
+                    <li class="user-footer justify-content-center">
                         @*<a href="@Url.Action("Profile","")" class="btn btn-default btn-flat">Profile</a>*@
                         <a href="@Url.Action("Logout","Admin")" class="btn btn-default btn-flat float-right">Sign out</a>
                     </li>

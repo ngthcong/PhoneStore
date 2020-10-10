@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using PhoneStore.CustomHandler;
 using PhoneStore.Data;
 using PhoneStore.Interfaces;
@@ -24,20 +25,19 @@ namespace PhoneStore.Services
     {
         private readonly IUserRepo _userRepo;
         private readonly IMapper _mapper;
-        private readonly IWebHostEnvironment _hosting;
 
 
-        public UserService(IUserRepo userRepo, IMapper mapper, IWebHostEnvironment hosting)
+
+        public UserService(IUserRepo userRepo, IMapper mapper)
         {
             _userRepo = userRepo;
             _mapper = mapper;
-            _hosting = hosting;
 
         }
 
         public bool CheckUserLogin(int aid)
         {
-            var _acc = GetUserInfo(aid);
+            var _acc = GetUser(aid);
             bool _isValid = _userRepo.CheckAccountStatus(aid);
             if (_acc == null || !_isValid)
             {
@@ -51,23 +51,14 @@ namespace PhoneStore.Services
         }
 
 
-        public UserViewModel GetUserInfo(int aid)
+        public Account GetUser(int aid)
         {
-            Account account = _userRepo.GetUserInfo(aid);
-            if (account == null)
-            {
-                return null;
-            }
-            else
-            {
-                UserViewModel user = _mapper.Map<UserViewModel>(account);
-                return user;
-            }
+            return _userRepo.GetUser(aid);
         }
 
         public Response<string> Login(LoginModel model, HttpContext httpContext)
         {
-            Account _acc = _userRepo.GetUserAccount(model);
+            Account _acc = _userRepo.GetAccountByEmail(model);
 
             Response<string> response = new Response<string>();
             if (_acc == null)
@@ -84,7 +75,7 @@ namespace PhoneStore.Services
                     {
                         if (_acc.AccPass == model.Pass)
                         {
-                            GenerateCookie(_acc.AccId, _acc.AccRoleId.ToString(), httpContext);
+                            GenerateCookie(_acc.AccId, _acc.AccRoleId.Value, httpContext);
                             response.IsSuccess = true;
                             response.Code = "200";
                             response.Message = "Đăng nhập thành công";
@@ -102,7 +93,7 @@ namespace PhoneStore.Services
                         string passWord = Encrypt.EncryptPassword(model.Pass, _acc.AccSalt);
                         if (_acc.AccPass == passWord)
                         {
-                            GenerateCookie(_acc.AccId, _acc.AccRoleId.ToString(), httpContext);
+                            GenerateCookie(_acc.AccId, _acc.AccRoleId.Value, httpContext);
                             response.IsSuccess = true;
                             response.Code = "200";
                             response.Message = "Đăng nhập thành công";
@@ -130,24 +121,26 @@ namespace PhoneStore.Services
             return response;
         }
 
-        public void GenerateCookie(int aid, string role, HttpContext httpContext)
+        public void GenerateCookie(int aid, int role, HttpContext httpContext)
         {
             var userClaims = new List<Claim>()
                             {
                                 //new Claim("Email", em.Email),
                                 new Claim(ClaimTypes.NameIdentifier, aid.ToString()),
                                 //new Claim(ClaimTypes.Email, em.Email),
-                                new Claim(ClaimTypes.Role, role)
+                                new Claim(ClaimTypes.Role, role.ToString())
                             };
             var userIdentity = new ClaimsIdentity(userClaims, "User Identity");
             var userPrincipal = new ClaimsPrincipal(new[] { userIdentity });
 
-            httpContext.SignInAsync(userPrincipal, new AuthenticationProperties { ExpiresUtc = DateTime.Now.AddMinutes(20) });
+            int time = role > 3 ? 43200 : 30;
+
+            httpContext.SignInAsync(userPrincipal, new AuthenticationProperties { ExpiresUtc = DateTime.Now.AddMinutes(time) });
         }
 
         public Response<string> Signup(SignupModel model, HttpContext httpContext)
         {
-            if(model.RePass != model.AccPass)
+            if (model.RePass != model.AccPass)
             {
                 Response<string> response = new Response<string>()
                 {
@@ -159,7 +152,7 @@ namespace PhoneStore.Services
             }
             else
             {
-               string salt =  Encrypt.GetRandomSalt();
+                string salt = Encrypt.GetRandomSalt();
                 string hashPassword = Encrypt.EncryptPassword(model.AccPass, salt);
                 Account newAcc = _mapper.Map<Account>(model);
                 newAcc.AccSalt = salt;
@@ -169,8 +162,8 @@ namespace PhoneStore.Services
                 newAcc.DateCreated = DateTime.Now;
                 _userRepo.CreateAccount(newAcc);
                 _userRepo.SaveChanges();
-                Account createdAccount = _userRepo.GetUserInfo(newAcc.AccId);
-                GenerateCookie(createdAccount.AccId, createdAccount.AccRoleId.ToString(), httpContext);
+                Account createdAccount = _userRepo.GetUser(newAcc.AccId);
+                GenerateCookie(createdAccount.AccId, createdAccount.AccRoleId.Value, httpContext);
                 Response<string> response = new Response<string>()
                 {
                     IsSuccess = true,

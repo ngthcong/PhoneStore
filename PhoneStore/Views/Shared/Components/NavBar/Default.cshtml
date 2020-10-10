@@ -1,13 +1,15 @@
 ﻿  <!-- Header -->
 @using PhoneStore.Models.ViewModel
+@using PhoneStore.Data
 @using PhoneStore.Models.ViewModel.User
 @using PhoneStore.CustomHandler
 @model PhoneStore.Models.ViewModel.HeaderViewModel
 
 @{
-    IEnumerable<BrandViewModel> pbrands = Model.brands;
-    IEnumerable<TypeViewModel> types = Model.types;
-    UserViewModel user = Model.user;
+    ICollection<BrandGroup> Phone = Model.Phone;
+    ICollection<BrandGroup> Accesscories = Model.Accesscories;
+    
+    Account user = Model.user;
     int cartCount = Model.cartCount;
 }
 <header class="header">
@@ -22,9 +24,9 @@
                                 <li class="hassubs active">
                                     <a href="@Url.Action("Product","Product",new {gid = 1 })">Điện thoại</a>
                                     <ul>
-                                        @foreach (var item in pbrands)
+                                        @foreach (var item in Phone)
                                         {
-                                            <li><a href="@Url.Action("Product","Product", new { gid = 1, bid = item.BrandId })">@item.BrandName</a></li>
+                                            <li><a href="@Url.Action("Product","Product", new { gid = 1, bid = item.BrandId })">@item.Brand.BrandName</a></li>
                                         }
 
                                     </ul>
@@ -42,9 +44,9 @@
                                 <li class="hassubs">
                                     <a href="@Url.Action("Product","Product",new {gid = 2})">Phụ kiện</a>
                                     <ul>
-                                        @foreach (var item in types)
+                                        @foreach (var item in Accesscories)
                                         {
-                                            <li><a href="@Url.Action("Product","Product", new { gid = item.GroupId, tid = item.TypeId  })">@item.TypeName</a></li>
+                                            <li><a href="@Url.Action("Product","Product", new { gid = item.GroupId, tid = item.TypeId  })">@item.Type.TypeName</a></li>
                                         }
 
 
@@ -63,7 +65,7 @@
                             <div class="shopping_cart">
                                 <a href="@Url.Action("Cart","Product")">
                                     <i class="fa fa-shopping-cart"></i>
-                                    <div>Cart <span>(@cartCount)</span></div>
+                                    <div>Giỏ hàng <span>(@cartCount)</span></div>
                                 </a>
                             </div>
                             @if (user != null)
@@ -130,10 +132,10 @@
                 <li class="page_menu_item has-children menu_mm">
                     <a href="index.html">Điện thoại<i class="fa fa-angle-down"></i></a>
                     <ul class="page_menu_selection menu_mm">
-                        @foreach (var item in pbrands)
+                        @foreach (var item in Phone)
                         {
-                            <li><a href="@Url.Action("Product","Product")">@item.BrandName</a></li>
-                            <li class="page_menu_item menu_mm"><a href="@Url.Action("Product","Product")">@item.BrandName<i class="fa fa-angle-down"></i></a></li>
+                            <li><a href="@Url.Action("Product","Product")">@item.Brand.BrandName</a></li>
+                            <li class="page_menu_item menu_mm"><a href="@Url.Action("Product","Product")">@item.Brand.BrandName<i class="fa fa-angle-down"></i></a></li>
                         }
                     </ul>
                 </li>
@@ -149,9 +151,9 @@
                 <li class="page_menu_item has-children menu_mm">
                     <a href="@Url.Action("Product","Product")">Phụ kiện<i class="fa fa-angle-down"></i></a>
                     <ul class="page_menu_selection menu_mm">
-                        @foreach (var item in types)
+                        @foreach (var item in Accesscories)
                         {
-                            <li class="page_menu_item menu_mm"><a href="@Url.Action("Product","Product")">@item.TypeName<i class="fa fa-angle-down"></i></a></li>
+                            <li class="page_menu_item menu_mm"><a href="@Url.Action("Product","Product")">@item.Type.TypeName<i class="fa fa-angle-down"></i></a></li>
                         }
                     </ul>
                 </li>

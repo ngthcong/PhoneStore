@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using PhoneStore.Data;
 using PhoneStore.Interfaces.Services;
 using PhoneStore.Models;
 using PhoneStore.Models.FormModel;
@@ -23,13 +25,14 @@ namespace PhoneStore.Controllers
         }
         public IActionResult ProductInfo(int pid)
         {
+            
             return View(_proService.GetProductInfo(pid));
         }
         [HttpGet]
         public IActionResult VariantImage(int vid)
         {
-            IEnumerable<ImageViewModel> images = _proService.GetProductImage(vid);
-            Response<IEnumerable<ImageViewModel>> res = new Response<IEnumerable<ImageViewModel>>()
+            IEnumerable<VarImages> images = _proService.GetProductImage(vid);
+            Response<IEnumerable<VarImages>> res = new Response<IEnumerable<VarImages>>()
             {
                 IsSuccess = true,
                 Code = "200",
@@ -42,25 +45,26 @@ namespace PhoneStore.Controllers
         {
             if (tid == null && bid == null)
             {
-                PageinatedList<ProductViewModel> pages = PageinatedList<ProductViewModel>.CreateAsync(_proService.GetProducts(gid).AsQueryable(), 1, 12);
+                PageinatedList<Product> pages = PageinatedList<Product>.CreateAsync(_proService.GetProductsByGroup(gid).AsQueryable(), 1, 12);
                 return View(pages);
             }
             else if (tid != null && bid == null)
             {
 
-                PageinatedList<ProductViewModel> pages = PageinatedList<ProductViewModel>.CreateAsync(_proService.GetProductsByType(gid, tid.Value).AsQueryable(), 1, 12);
+                PageinatedList<Product> pages = PageinatedList<Product>.CreateAsync(_proService.GetProductsByType(gid, tid.Value).AsQueryable(), 1, 12);
                 return View(pages);
 
             }
             else
             {
-                PageinatedList<ProductViewModel> pages = PageinatedList<ProductViewModel>.CreateAsync(_proService.GetProductsByBrand(gid, bid.Value).AsQueryable(), 1, 12);
+                PageinatedList<Product> pages = PageinatedList<Product>.CreateAsync(_proService.GetProductsByBrand(gid,null, bid.Value).AsQueryable(), 1, 12);
                 return View(pages);
             }
         }
 
         public IActionResult Cart()
         {
+
             return View(_cartService.GetCartProduct());
         }
         [HttpPost]
@@ -120,10 +124,10 @@ namespace PhoneStore.Controllers
             return new JsonResult(res);
         }
         [HttpPost]
-        public IActionResult Checkout(CheckOutModel model)
+        public IActionResult DeleteFromCart(int pid)
         {
             Response<string> res = new Response<string>();
-            
+            _cartService.DeleteFromCart(pid);
 
             res.IsSuccess = true;
             res.Code = "200";
@@ -132,6 +136,17 @@ namespace PhoneStore.Controllers
 
 
 
+            return new JsonResult(res);
+        }
+        [HttpPost]
+        public IActionResult Checkout(CheckOutModel model)
+        {
+           
+            var user = User as ClaimsPrincipal;
+            string userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
+            model.CusId = userId == null ? (int?)null : Int16.Parse(userId);
+            Response<string> res = _cartService.Checkout(model);
+            res.Data = Url.Action("Cart", "Product");
             return new JsonResult(res);
         }
 

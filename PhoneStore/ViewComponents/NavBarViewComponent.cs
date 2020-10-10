@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using PhoneStore.Data;
 using PhoneStore.Interfaces.Services;
 using PhoneStore.Models.ViewModel;
 using PhoneStore.Models.ViewModel.User;
@@ -48,7 +49,7 @@ namespace PhoneStore.ViewComponents
             {
                 
                 
-                UserViewModel userModel = _userService.GetUserInfo(Int32.Parse(userId));
+                Account userModel = _userService.GetUser(Int32.Parse(userId));
                 HeaderViewModel model = _productService.GetMenu();
                 model.user = userModel;
                 model.cartCount = _cartService.CartProductCount();

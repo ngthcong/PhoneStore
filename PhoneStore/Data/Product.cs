@@ -7,13 +7,10 @@ namespace PhoneStore.Data
     {
         public Product()
         {
-            AccBasket = new HashSet<AccBasket>();
-            Comment = new HashSet<Comment>();
             InvoiceDetail = new HashSet<InvoiceDetail>();
             ProSpecification = new HashSet<ProSpecification>();
             ProVariant = new HashSet<ProVariant>();
             ProView = new HashSet<ProView>();
-            Rating = new HashSet<Rating>();
         }
 
         public int ProId { get; set; }
@@ -31,12 +28,9 @@ namespace PhoneStore.Data
         public virtual ProBrand ProBrand { get; set; }
         public virtual ProGroup ProGroup { get; set; }
         public virtual ProType ProType { get; set; }
-        public virtual ICollection<AccBasket> AccBasket { get; set; }
-        public virtual ICollection<Comment> Comment { get; set; }
         public virtual ICollection<InvoiceDetail> InvoiceDetail { get; set; }
         public virtual ICollection<ProSpecification> ProSpecification { get; set; }
         public virtual ICollection<ProVariant> ProVariant { get; set; }
         public virtual ICollection<ProView> ProView { get; set; }
-        public virtual ICollection<Rating> Rating { get; set; }
     }
 }

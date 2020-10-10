@@ -10,13 +10,33 @@
 }
 
 @model PhoneStore.Models.ViewModel.CartViewModel
-
 <!-- Cart Info -->
 
 <div class="cart_info mt-5">
     @await Html.PartialAsync("_Cart", Model)
 </div>
 
+
+<div class="modal fade" id="modal-default">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Thông báo</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="text-align:center" >
+                <h3 id="model-text1" >One fine body&hellip;</h3><br />
+                <h3 id="model-text2" >One fine body&hellip;</h3>
+            </div>
+            
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 @section scripts{
     <script src="~/plugins/jquery-validation/jquery.validate.js"></script>
     <script src="~/js/cart.js"></script>

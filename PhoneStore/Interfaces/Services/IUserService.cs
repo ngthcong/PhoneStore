@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using PhoneStore.Data;
 using PhoneStore.Models.FormModel;
 using PhoneStore.Models.FormModel.User;
 using PhoneStore.Models.Response;
@@ -15,9 +16,9 @@ namespace PhoneStore.Interfaces.Services
     {
         Response<string> Login(LoginModel model, HttpContext httpContext);
         Response<string> Signup(SignupModel model, HttpContext httpContext);
-        UserViewModel GetUserInfo(int aid);
+        Account GetUser(int aid);
         bool CheckUserLogin(int aid);
 
-        void GenerateCookie(int aid, string role, HttpContext httpContext);
+        void GenerateCookie(int aid, int role, HttpContext httpContext);
     }
 }

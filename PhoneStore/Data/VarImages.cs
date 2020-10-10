@@ -8,7 +8,7 @@ namespace PhoneStore.Data
         public int ImgId { get; set; }
         public int? VarId { get; set; }
         public string ImgPath { get; set; }
-        public int? Index { get; set; }
+        public int? ImgIndex { get; set; }
 
         public virtual ProVariant Var { get; set; }
     }

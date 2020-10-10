@@ -20,6 +20,8 @@ using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using PhoneStore.CustomHandler;
 using PhoneStore.Interfaces.Repository;
+using PhoneStore.Interfaces.Repositories;
+using PhoneStore.Repositories;
 //using PhoneStore.Data;
 
 namespace PhoneStore
@@ -56,10 +58,18 @@ namespace PhoneStore
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<IProductRepo, ProductRepo>();
             services.AddScoped<IUserRepo, UserRepo>();
+            services.AddScoped<IAdminProductRepo, AdminProductRepo>();
+            services.AddScoped<IAdminInvoiceRepo, AdminInvoiceRepo>();
+            services.AddScoped<IInvoiceRepo, InvoiceRepo>();
+            services.AddScoped(typeof(IRepository<>),typeof( BaseRepository<>));
 
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICartService, CartService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAdminProductService, AdminProductService>();
+            services.AddScoped<IAdminInvoiceService, AdminInvoiceService>();
+            services.AddScoped<ICartService, CartService>();
+
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
         }

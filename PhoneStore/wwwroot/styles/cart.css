@@ -1022,15 +1022,25 @@ section {
 .cart_item_product {
     width: 63%;
 }
+.item-detail {
+    width: 37%;
+}
 
 .cart_item_price {
-    width: 10%;
+    width: 40%;
 }
 
 .cart_item_quantity {
-    width: 17%;
+    width: 30%;
     text-align: center;
 }
+.cart_item_remove {
+    width: 30%;
+    text-align: center;
+}
+    .cart_item_remove i {
+        font-size: 30px;
+    }
 
 .cart_item_total {
     width: 10%;

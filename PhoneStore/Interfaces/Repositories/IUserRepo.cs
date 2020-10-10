@@ -10,8 +10,8 @@ namespace PhoneStore.Interfaces.Repository
 {
     public interface IUserRepo
     {
-        Account GetUserAccount(LoginModel model);
-        Account GetUserInfo(int aid);
+        Account GetAccountByEmail(LoginModel model);
+        Account GetUser(int aid);
         bool CheckAccountStatus(int aid);
         void CreateAccount(Account newacc);
         void SaveChanges();

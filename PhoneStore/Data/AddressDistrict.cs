@@ -7,9 +7,7 @@ namespace PhoneStore.Data
     {
         public AddressDistrict()
         {
-            Account = new HashSet<Account>();
             AddressWard = new HashSet<AddressWard>();
-            Invoice = new HashSet<Invoice>();
         }
 
         public int DistrictId { get; set; }
@@ -17,8 +15,6 @@ namespace PhoneStore.Data
         public string DistrictName { get; set; }
 
         public virtual AddressCity City { get; set; }
-        public virtual ICollection<Account> Account { get; set; }
         public virtual ICollection<AddressWard> AddressWard { get; set; }
-        public virtual ICollection<Invoice> Invoice { get; set; }
     }
 }

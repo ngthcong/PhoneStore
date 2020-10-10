@@ -30,9 +30,9 @@ namespace PhoneStore.Controllers
         {
             IndexViewModel index = new IndexViewModel()
             {
-                accessories = _productService.GetProducts(2),
-                phones = _productService.GetProducts(1),
-                laptops = _productService.GetProducts(3),
+                accessories = _productService.GetProductsByGroup(2).Take(12),
+                phones = _productService.GetProductsByGroup(1).Take(12),
+                laptops = _productService.GetProductsByGroup(3).Take(12),
             };
 
 
