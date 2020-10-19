@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using PhoneStore.CustomHandler;
 using PhoneStore.Data;
 using PhoneStore.Interfaces;
+using PhoneStore.Interfaces.Repositories;
 using PhoneStore.Interfaces.Repository;
 using PhoneStore.Interfaces.Services;
 using PhoneStore.Models.FormModel;
@@ -23,12 +25,12 @@ namespace PhoneStore.Services
 {
     public class UserService : IUserService
     {
-        private readonly IUserRepo _userRepo;
+        private readonly IRepository<Account> _userRepo;
         private readonly IMapper _mapper;
 
 
 
-        public UserService(IUserRepo userRepo, IMapper mapper)
+        public UserService(IRepository<Account> userRepo, IMapper mapper)
         {
             _userRepo = userRepo;
             _mapper = mapper;
@@ -37,8 +39,8 @@ namespace PhoneStore.Services
 
         public bool CheckUserLogin(int aid)
         {
-            var _acc = GetUser(aid);
-            bool _isValid = _userRepo.CheckAccountStatus(aid);
+            var _acc = _userRepo.GetByID(aid);
+            bool _isValid = _acc.AccStatus.Value == true ? true : false;
             if (_acc == null || !_isValid)
             {
                 return false;
@@ -49,16 +51,45 @@ namespace PhoneStore.Services
 
             }
         }
+        public void UpdateAccount(Account oldaccount, Account newAccount)
+        {
+            oldaccount.AccEmail = newAccount.AccEmail;
+            oldaccount.AccAddress = newAccount.AccAddress;
+            oldaccount.AccName = newAccount.AccName;
+            oldaccount.AccPhone = newAccount.AccPhone;
+            oldaccount.AccWardId = newAccount.AccWardId;
+            _userRepo.Update(oldaccount);
+            _userRepo.SaveChanges();
+        }
 
-
+        public void CreateAccount(Account account)
+        {
+            string salt = Encrypt.GetRandomSalt();
+            string hashPassword = Encrypt.EncryptPassword(account.AccPass, salt);
+            account.AccSalt = salt;
+            account.AccStatus = true;
+            account.AccPass = hashPassword;
+            account.DateCreated = DateTime.Now;
+            _userRepo.Insert(account);
+            _userRepo.SaveChanges();
+        }
         public Account GetUser(int aid)
         {
-            return _userRepo.GetUser(aid);
+            return _userRepo.GetByID(aid);
+        }
+        public Account GetUserInfo(int aid)
+        {
+            return _userRepo.Get(filter: x => x.AccId == aid,
+                includeProperties: x => x.Include(x => x.InvoiceCus)
+                 .Include(x => x.AccWard)
+                 .ThenInclude(x => x.District)
+                 .ThenInclude(x => x.City))
+                .FirstOrDefault();
         }
 
         public Response<string> Login(LoginModel model, HttpContext httpContext)
         {
-            Account _acc = _userRepo.GetAccountByEmail(model);
+            Account _acc = _userRepo.Get(filter: x => x.AccEmail == model.Email).FirstOrDefault();
 
             Response<string> response = new Response<string>();
             if (_acc == null)
@@ -160,9 +191,9 @@ namespace PhoneStore.Services
                 newAcc.AccStatus = true;
                 newAcc.AccRoleId = 4;
                 newAcc.DateCreated = DateTime.Now;
-                _userRepo.CreateAccount(newAcc);
+                _userRepo.Insert(newAcc);
                 _userRepo.SaveChanges();
-                Account createdAccount = _userRepo.GetUser(newAcc.AccId);
+                Account createdAccount = _userRepo.GetByID(newAcc.AccId);
                 GenerateCookie(createdAccount.AccId, createdAccount.AccRoleId.Value, httpContext);
                 Response<string> response = new Response<string>()
                 {
@@ -173,6 +204,20 @@ namespace PhoneStore.Services
                 };
                 return response;
             }
+        }
+
+        public Account GetUserByEmail(string email)
+        {
+            return _userRepo.Get(filter: x => x.AccEmail == email).FirstOrDefault();
+        }
+        public ICollection<Account> GetAllEmployees()
+        {
+            return _userRepo.Get(filter: x => x.AccRoleId != 4 && x.AccRoleId != 1, includeProperties: x => x.Include(x => x.AccRole));
+        }
+
+        public ICollection<Account> GetAllAccount()
+        {
+            return _userRepo.Get(filter: x => x.AccRoleId != 1, includeProperties: x => x.Include(x => x.AccRole));
         }
     }
 }

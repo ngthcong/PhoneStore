@@ -10,7 +10,6 @@ namespace PhoneStore.Data
             InvoiceDetail = new HashSet<InvoiceDetail>();
             ProSpecification = new HashSet<ProSpecification>();
             ProVariant = new HashSet<ProVariant>();
-            ProView = new HashSet<ProView>();
         }
 
         public int ProId { get; set; }
@@ -31,6 +30,5 @@ namespace PhoneStore.Data
         public virtual ICollection<InvoiceDetail> InvoiceDetail { get; set; }
         public virtual ICollection<ProSpecification> ProSpecification { get; set; }
         public virtual ICollection<ProVariant> ProVariant { get; set; }
-        public virtual ICollection<ProView> ProView { get; set; }
     }
 }

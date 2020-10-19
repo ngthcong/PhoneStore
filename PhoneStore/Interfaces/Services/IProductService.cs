@@ -33,6 +33,6 @@ namespace PhoneStore.Interfaces.Services
 
         string UploadImageAsync(IFormFile file);
         string UploadBase64Image(string name, string image);
-
+        Product Update(Product product);
     }
 }

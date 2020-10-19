@@ -1,0 +1,144 @@
+﻿
+@{
+    ViewData["Title"] = "AddEmployee";
+    Layout = "~/Views/Shared/Admin/_AdminLayout.cshtml";
+}
+@using PhoneStore.Data
+@model ICollection<AddressCity>
+@section css{ }
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Thêm nhân viên</h1>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-12">
+                    <div class="card card-success" id="containter">
+                        <div class="card-header">
+                            <h3 class="card-title">Thông tin tài khoản</h3>
+                        </div>
+                        <form id="form" enctype="multipart/form-data">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Họ và Tên</label>
+                                            <input type="text" class="form-control" id="AccName" name="AccName" placeholder="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1"> Số điện thoại</label>
+                                            <input type="text" class="form-control" id="AccPhone" name="AccPhone" placeholder="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Email</label>
+                                            <input type="text" class="form-control" id="AccEmail" name="AccEmail" placeholder="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Mật khẩu</label>
+                                            <input type="text" class="form-control" id="AccPass" name="AccPass" placeholder="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label>Thành phố/Tỉnh</label>
+                                            <select id="cities" name="AccCityId" class="form-control">
+                                                <option value="" disabled selected hidden></option>
+                                                @foreach (var item in Model)
+                                                {
+                                                    <option value="@item.CityId">@item.CityName</option>
+
+                                                }
+
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label>Quận/Huyện</label>
+
+                                            <select id="district" name="AccDistrictId" disabled="disabled" class="form-control">
+                                                <option value="" disabled selected hidden></option>
+
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label>Phường/Xã</label>
+                                            <select id="ward" name="AccWardId" disabled="disabled" class="form-control">
+                                                <option value="" disabled selected hidden></option>
+
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Số nhà và đường</label>
+                                            <input type="text" class="form-control" id="AccAddress" name="AccAddress" placeholder="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label>Chức vụ</label>
+                                            <select id="AccRoleId" name="AccRoleId" class="form-control">
+                                                <option value="2">Thu ngân</option>
+                                                <option value="3">Nhân viên</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+                            </div>
+                            <div class="card-footer">
+
+
+                                <button type="submit" class="btn btn-info float-right">Thêm nhân viên</button>
+                            </div>
+                        </form>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+
+
+
+                </div>
+                <!--/.col (left) -->
+                <!-- right column -->
+                <!--/.col (right) -->
+            </div>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+
+@section scripts{
+    <script src="~/plugins/jquery-validation/jquery.validate.js"></script>
+    <script src="~/js/employee.js"></script>
+
+}

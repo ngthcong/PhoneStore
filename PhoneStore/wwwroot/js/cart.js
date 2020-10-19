@@ -159,7 +159,7 @@ $(document).ready(function () {
         // Handle product quantity input
 
         var cartinfo = $(".cart_info");
-        var incButton = $('.quantity_inc');
+
         var form = $('#checkout-form');
         var citiesOption = $('#cities');
         var districOption = $('#district')
@@ -460,8 +460,9 @@ $(document).ready(function () {
                 success: function (response) {
                     console.log(response.isSuccess)
                     if (response.isSuccess === false) {
-
-                        alert(response.message)
+                        $('#model-text1').text(response.message)
+                        $('#modal-default').modal('show');
+                        url = response.data;
                     }
                     if (response.isSuccess === true) {
                         var message = response.message;

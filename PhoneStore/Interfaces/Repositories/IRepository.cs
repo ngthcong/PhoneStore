@@ -18,5 +18,6 @@ namespace PhoneStore.Interfaces.Repositories
         TEntity GetByID(object id);
         void Insert(TEntity entity);
         void Update(TEntity entity);
+        void SaveChanges();
     }
 }

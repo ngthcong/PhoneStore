@@ -13,7 +13,7 @@ $(document).ready(function () {
 
     var phonediv = $('#p-div');
     var chargerdiv = $('#cg-div');
-    var pbankdiv = $('#pb-div');
+    var pbankdiv = $('#pb-div'); 
     var hpdiv = $('#hp-div');
     var ldiv = $('#l-div');
 
@@ -232,7 +232,7 @@ $(document).ready(function () {
                     if (response.isSuccess === true) {
                         enableElements(pform)
                         resetInput(pform)
-
+                        window.location = response.data;
                     }
                 },
                 error: function (xhr, error, status) {
@@ -388,7 +388,7 @@ $(document).ready(function () {
                     if (response.isSuccess === true) {
                         enableElements(lform)
                        resetInput(lform)
-                        
+                        window.location = response.data;
                     }
                     
                 },
@@ -529,7 +529,7 @@ $(document).ready(function () {
                     if (response.isSuccess === true) {
                         enableElements(cgform)
                         resetInput(cgform)
-
+                        window.location = response.data;
                     }
                 },
                 error: function (xhr, error, status) {
@@ -660,7 +660,7 @@ $(document).ready(function () {
                     if (response.isSuccess === true) {
                         enableElements(hpform)
                         resetInput(hpform)
-
+                        window.location = response.data;
                     }
                 },
                 error: function (xhr, error, status) {
@@ -839,7 +839,7 @@ $(document).ready(function () {
                     if (response.isSuccess === true) {
                         enableElements(pbform)
                         resetInput(pbform)
-
+                        window.location = response.data;
                     }
                 },
                 error: function (xhr, error, status) {

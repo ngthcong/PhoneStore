@@ -8,7 +8,7 @@
 @{
     ICollection<BrandGroup> Phone = Model.Phone;
     ICollection<BrandGroup> Accesscories = Model.Accesscories;
-    
+
     Account user = Model.user;
     int cartCount = Model.cartCount;
 }
@@ -42,13 +42,17 @@
                                     </ul>
                                 </li>
                                 <li class="hassubs">
-                                    <a href="@Url.Action("Product","Product",new {gid = 2})">Phụ kiện</a>
+                                    <a href="@Url.Action("Product","Product",new {gid = 2})" style="min-width:100px"> Phụ kiện</a>
                                     <ul>
-                                        @foreach (var item in Accesscories)
-                                        {
-                                            <li><a href="@Url.Action("Product","Product", new { gid = item.GroupId, tid = item.TypeId  })">@item.Type.TypeName</a></li>
-                                        }
+                                        @{
 
+
+
+                                            foreach(var item in Accesscories.Select(x => new { typeId = x.TypeId, typeName = x.Type.TypeName }).Distinct())
+                                            {
+                                                <li><a href="@Url.Action("Product","Product", new { gid = 2, tid = item.typeId  })">@item.typeName</a></li>
+                                            }
+                                        }
 
                                     </ul>
                                 </li>
@@ -71,12 +75,18 @@
                             @if (user != null)
                             {
                                 <div class="account">
-                                    <a href="@Url.Action("Account", "User")">
+                                    <a href="@Url.Action("AccountInfo", "Home")">
                                         @{
-                                            var name = FileManager.StringSeparator(user.AccName," ");
+                                            var name = FileManager.StringSeparator(user.AccName, " ");
 
                                         }
                                         <div>Chào @name.Last() </div>
+                                    </a>
+                                </div>
+                                <div class="account">
+                                    <a href="@Url.Action("Logout","Home")">
+
+                                        <div>Thoát</div>
                                     </a>
                                 </div>
                             }
@@ -88,6 +98,7 @@
                                         <div>Tài khoản </div>
                                     </a>
                                 </div>
+
                             }
 
                             <div class="hamburger"><i class="fa fa-bars" aria-hidden="true"></i></div>
@@ -103,18 +114,28 @@
         <div class="container">
             <div class="row">
                 <div class="col">
+
                     <div class="search_panel_content d-flex flex-row align-items-center justify-content-end">
-                        <form action="#">
-                            <input type="text" class="search_input" placeholder="Search" required="required">
-                        </form>
+                        <div class="search-hover">
+                            <input type="text" class="search_input" placeholder="Tìm kiếm" id="search-input">
+                            <div class="search-list" id="SearchData">
+                            </div>
+                        </div>
+
+
                     </div>
+
+
                 </div>
+
             </div>
+
         </div>
     </div>
 
+
     <!-- Social -->
-    
+
 </header>
 
 <!-- Menu -->

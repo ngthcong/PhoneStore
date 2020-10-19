@@ -11816,7 +11816,6 @@
 		 */
 		"oSearch": $.extend( {}, DataTable.models.oSearch ),
 	
-	
 		/**
 		 * __Deprecated__ The functionality provided by this parameter has now been
 		 * superseded by that provided through `ajax`, which should be used instead.

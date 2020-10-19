@@ -64,8 +64,13 @@ namespace PhoneStore.Controllers
 
         public IActionResult Cart()
         {
-
-            return View(_cartService.GetCartProduct());
+            var user = User as ClaimsPrincipal;
+            string userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null)
+            {
+                return View(_cartService.GetCartProduct(null));
+            }
+            return View(_cartService.GetCartProduct(Int16.Parse(userId)));
         }
         [HttpPost]
         public IActionResult AddCart(int pid)
@@ -153,7 +158,13 @@ namespace PhoneStore.Controllers
 
         public IActionResult PartialCart()
         {
-            return PartialView("_Cart", _cartService.GetCartProduct());
+            var user = User as ClaimsPrincipal;
+            string userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null)
+            {
+                return PartialView("_Cart", _cartService.GetCartProduct(null));
+            }
+            return PartialView("_Cart", _cartService.GetCartProduct(Int16.Parse(userId)));
         }
 
         public IActionResult GetCites()

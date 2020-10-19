@@ -14,5 +14,6 @@ namespace PhoneStore.Interfaces.Services
         Invoice GetInvoice(int id);
         ICollection<Invoice> SearchInvoiceByCusPhone(string phone);
         ICollection<Invoice> SearchInvoiceByCusName(string name);
+        Invoice ConfirmOrder(Invoice newInvoice);
     } 
 }

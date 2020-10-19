@@ -19,8 +19,6 @@ namespace PhoneStore.Data
         public string InvCusPhone { get; set; }
         public int? InvWardId { get; set; }
         public string InvAddress { get; set; }
-        public int? InvPaymentMethod { get; set; }
-        public int? InvDeliveryMethod { get; set; }
         public string InvNote { get; set; }
         public bool? InvStatus { get; set; }
         public DateTime? DateCreated { get; set; }

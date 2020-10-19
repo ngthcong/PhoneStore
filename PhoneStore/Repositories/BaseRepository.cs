@@ -76,5 +76,9 @@ namespace PhoneStore.Repositories
             _dbSet.Attach(entity);
             _context.Entry(entity).State = EntityState.Modified;
         }
+        public void SaveChanges()
+        {
+            _context.SaveChanges();
+        }
     }
 }

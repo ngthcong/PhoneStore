@@ -47,7 +47,7 @@ namespace PhoneStore.Repository
                 .Include(i => i.ProVariant)
                 .Include(i => i.ProType)
                 .Include(i => i.ProSpecification).ThenInclude(i => i.Spec)
-                .Where(i => i.ProId == pid && i.ProStatus == true)
+                .Where(i => i.ProId == pid)
                 .FirstOrDefault();
         }
         public ICollection<Product> GetAllProducts()
@@ -97,7 +97,7 @@ namespace PhoneStore.Repository
         }
         public ICollection<BrandGroup> GetGroup(int gid)
         {
-            return _context.BrandGroup.Include(i => i.Group).Include(i => i.Type).Include(i =>i.Brand).Where(i => i.GroupId == gid).ToList();
+            return _context.BrandGroup.Include(i => i.Group).Include(i => i.Type).Include(i => i.Brand).Where(i => i.GroupId == gid).Distinct().ToList();
         }
         public ICollection<BrandGroup> GetBrands(int gid, int? tid)
         {
@@ -132,7 +132,10 @@ namespace PhoneStore.Repository
 
 
 
-
+        public void Update (Product product )
+        {
+            _context.Update(product);
+        }
 
 
         #region Address

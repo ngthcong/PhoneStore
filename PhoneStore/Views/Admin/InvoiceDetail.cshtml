@@ -7,9 +7,11 @@
 @section css{
 
 }
+@using PhoneStore.Models.ViewModel.InvoiceModel
 @using PhoneStore.Data
+@using PhoneStore.CustomHandler
+@model InvoiceDetailViewModel
 
-@model Invoice
 
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -37,7 +39,7 @@
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form role="form">
+                        <form id="form" enctype="multipart/form-data">
                             <div class="card-body">
                                 <div class="row">
 
@@ -47,23 +49,23 @@
                                             <div class="col-md-5">
                                                 <div class="callout callout-danger">
                                                     <div class="row">
-
+                                                        <input hidden id="InvId" name="InvId" value="@Model.Invoice.InvId">
                                                         <div class="col-sm-6">
                                                             <div class="form-group">
                                                                 <label for="exampleInputEmail1">Tên khách hàng</label>
-                                                                <input type="text" class="form-control" id="exampleInputEmail1" value="@Model.InvCusName" placeholder="">
+                                                                <input type="text" class="form-control" id="InvCusName" name="InvCusName" value="@Model.Invoice.InvCusName" placeholder="">
                                                             </div>
                                                         </div>
                                                         <div class="col-sm-6">
                                                             <div class="form-group">
                                                                 <label for="exampleInputEmail1">Số điện thoại</label>
-                                                                <input type="text" class="form-control" id="exampleInputEmail1" value="@Model.InvCusPhone" placeholder="">
+                                                                <input type="text" class="form-control" id="InvCusPhone" name="InvCusPhone" value="@Model.Invoice.InvCusPhone" placeholder="">
                                                             </div>
                                                         </div>
                                                         <div class="col-sm-6">
                                                             <div class="form-group">
                                                                 <label for="exampleInputEmail1">Email</label>
-                                                                <input type="text" class="form-control" id="exampleInputEmail1" value="@Model.InvCusEmail" placeholder="">
+                                                                <input type="text" class="form-control" id="InvCusEmail" name="InvCusEmail" value="@Model.Invoice.InvCusEmail" placeholder="">
                                                             </div>
                                                         </div>
 
@@ -72,17 +74,36 @@
                                                         <div class="col-sm-6">
                                                             <div class="form-group">
                                                                 <label>Thành phố</label>
-                                                                <select id="pbrand" name="proBrandId" class="form-control">
 
-                                                                    <option value="1">Apple</option>
-                                                                    <option value="2">Samsung</option>
-                                                                    <option value="3">OPPO</option>
-                                                                    <option value="4">Vsmart</option>
-                                                                    <option value="5">Xiaomi</option>
-                                                                    <option value="6">Realme</option>
-                                                                    <option value="7">Vivo</option>
-                                                                    <option value="8">Nokia</option>
-                                                                    <option value="9">Huawei</option>
+
+
+
+                                                                <select id="cities" name="InvCityId" class="form-control">
+
+
+                                                                    @if (Model.Invoice.InvWard != null)
+                                                                    {
+                                                                        foreach (var item in Model.Cities)
+                                                                        {
+                                                                            if (Model.Invoice.InvWard.District.City.CityId == item.CityId)
+                                                                            {
+                                                                                <option selected value="@item.CityId">@item.CityName</option>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <option value="@item.CityId">@item.CityName</option>
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <option value="" disabled selected hidden></option>
+                                                                        foreach (var item in Model.Cities)
+                                                                        {
+                                                                            <option value="@item.CityId">@item.CityName</option>
+                                                                        }
+                                                                    }
+
 
                                                                 </select>
                                                             </div>
@@ -90,17 +111,27 @@
                                                         <div class="col-sm-6">
                                                             <div class="form-group">
                                                                 <label>Quận huyện</label>
-                                                                <select id="pbrand" name="proBrandId" class="form-control">
-                                                                    <option value="" disabled selected hidden></option>
-                                                                    <option value="1">Apple</option>
-                                                                    <option value="2">Samsung</option>
-                                                                    <option value="3">OPPO</option>
-                                                                    <option value="4">Vsmart</option>
-                                                                    <option value="5">Xiaomi</option>
-                                                                    <option value="6">Realme</option>
-                                                                    <option value="7">Vivo</option>
-                                                                    <option value="8">Nokia</option>
-                                                                    <option value="9">Huawei</option>
+                                                                <select id="district" name="InvDistrictId" class="form-control" @if (Model.Invoice.InvWard == null) { @: disabled="disabled"
+                                                                        }>
+                                                                    @if (Model.Invoice.InvWard != null)
+                                                                    {
+                                                                        foreach (var item in Model.AddressDistricts.Where(x => x.CityId == Model.Invoice.InvWard.District.City.CityId))
+                                                                        {
+                                                                            if (Model.Invoice.InvWard.District.DistrictId == item.DistrictId)
+                                                                            {
+                                                                                <option selected value="@item.DistrictId">@item.DistrictName</option>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <option value="@item.DistrictId">@item.DistrictName</option>
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <option value="" disabled selected hidden></option>
+
+                                                                    }
 
                                                                 </select>
                                                             </div>
@@ -108,26 +139,63 @@
                                                         <div class="col-sm-6">
                                                             <div class="form-group">
                                                                 <label>Phường xã</label>
-                                                                <select id="pbrand" name="proBrandId" class="form-control">
-                                                                    <option value="" disabled selected hidden></option>
-                                                                    <option value="1">Apple</option>
-                                                                    <option value="2">Samsung</option>
-                                                                    <option value="3">OPPO</option>
-                                                                    <option value="4">Vsmart</option>
-                                                                    <option value="5">Xiaomi</option>
-                                                                    <option value="6">Realme</option>
-                                                                    <option value="7">Vivo</option>
-                                                                    <option value="8">Nokia</option>
-                                                                    <option value="9">Huawei</option>
+                                                                <select id="ward" name="InvWardId" class="form-control" @if (Model.Invoice.InvWard == null) { @: disabled="disabled"
+                                                                        }>
 
+                                                                    @if (Model.Invoice.InvWard != null)
+                                                                    {
+                                                                        foreach (var item in Model.AddressWards.Where(x => x.District.City.CityId == Model.Invoice.InvWard.District.City.CityId))
+                                                                        {
+                                                                            if (Model.Invoice.InvWard.WardId == item.WardId)
+                                                                            {
+                                                                                <option selected value="@item.WardId">@item.WardName</option>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <option value="@item.WardId">@item.WardName</option>
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <option value="" disabled selected hidden></option>
+
+                                                                    }
                                                                 </select>
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-sm-12">
+                                                        <div class="col-sm-6">
                                                             <div class="form-group">
                                                                 <label for="exampleInputEmail1">Số nhà và tên đường</label>
-                                                                <input type="text" class="form-control" id="exampleInputEmail1" value="@Model.InvAddress" placeholder="">
+                                                                <input type="text" class="form-control" id="InvAddress" name="InvAddress" value="@Model.Invoice.InvAddress" placeholder="">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for="exampleInputEmail1">Tình trạng</label>
+                                                                <select id="InvStatus" name="InvStatus" class="form-control">
+
+                                                                    @if (Model.Invoice.InvStatus == null)
+                                                                    {
+                                                                        <option selected value="NULL">Đang chờ duyệt</option>
+                                                                        <option value="False">Huỷ</option>
+                                                                        <option  value="True">Đã duyệt</option>
+                                                                    }
+                                                                    else if (Model.Invoice.InvStatus.Value == false)
+                                                                    {
+                                                                        <option value="NULL">Đang chờ duyệt</option>
+                                                                        <option selected value="False">Huỷ</option>
+                                                                        <option value="True">Đã duyệt</option>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <option  value="NULL">Đang chờ duyệt</option>
+                                                                        <option value="False">Huỷ</option>
+                                                                        <option selected value="True">Đã duyệt</option>
+                                                                    }
+
+                                                                </select>
                                                             </div>
                                                         </div>
 
@@ -161,16 +229,18 @@
 
                                                                             @{
                                                                                 int i = 1;
-                                                                                foreach (InvoiceDetail item in Model.InvoiceDetail)
+                                                                                foreach (InvoiceDetail item in Model.Invoice.InvoiceDetail)
                                                                                 {
                                                                                     <tr>
                                                                                         <td>@i</td>
                                                                                         <td>@item.Pro.ProName</td>
                                                                                         <td>@item.Var.VarColor</td>
-                                                                                        <td>@item.Pro.ProRetailPrice</td>
-                                                                                        <td>@item.Pro.ProSalePrice</td>
+                                                                                        <td>@Currency.CurrencyFormat(item.Pro.ProRetailPrice) </td>
+                                                                                        <td>@Currency.CurrencyFormat(item.Pro.ProSalePrice)</td>
                                                                                         <td>@item.ProQty</td>
+                                                                                       
                                                                                     </tr>
+                                                                                     i++; 
                                                                                 }
 
                                                                             }
@@ -188,8 +258,7 @@
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-warning">Huỷ đơn hàng</button>
-                                <button type="submit" class="btn btn-info float-right">Duyệt đơn đơn</button>
+                            <button type="submit" class="btn btn-info float-right">Lưu</button>
                             </div>
                             <!-- /.card-body -->
 
@@ -202,11 +271,13 @@
                 </div>
                 <!-- /.row -->
             </div><!-- /.container-fluid -->
+        </div>
     </section>
     <!-- /.content -->
 </div>
 
 @section scripts{
-
+    <script src="~/plugins/jquery-validation/jquery.validate.js"></script>
+    <script src="~/js/invoice/invoice.js"></script>
 
 }

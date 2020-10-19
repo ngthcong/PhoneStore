@@ -15,7 +15,7 @@ namespace PhoneStore.Interfaces
         void AddPhoneVariant(ProVariant v);
         void AddVariantImages(VarImages vim);
 
-
+        void Update(Product product);
 
 
         Product GetProduct(int pid);

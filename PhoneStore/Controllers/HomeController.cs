@@ -4,14 +4,17 @@ using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using PhoneStore.Data;
 using PhoneStore.Interfaces.Services;
 using PhoneStore.Models;
 using PhoneStore.Models.FormModel;
 using PhoneStore.Models.FormModel.User;
 using PhoneStore.Models.Response;
 using PhoneStore.Models.ViewModel;
+using PhoneStore.Models.ViewModel.User;
 
 namespace PhoneStore.Controllers
 {
@@ -19,11 +22,13 @@ namespace PhoneStore.Controllers
     {
         private readonly IProductService _productService;
         private readonly IUserService _userService;
+        private readonly IAddressService _addressService;
 
-        public HomeController(IProductService service, IUserService userService)
+        public HomeController(IProductService service, IUserService userService, IAddressService addressService)
         {
             _productService = service;
             _userService = userService;
+            _addressService = addressService;
         }
 
         public IActionResult Index()
@@ -38,6 +43,7 @@ namespace PhoneStore.Controllers
 
             return View(index);
         }
+     
 
         public IActionResult Privacy()
         {
@@ -110,6 +116,59 @@ namespace PhoneStore.Controllers
             }
         }
 
+
+        public IActionResult AccountInfo()
+        {
+            var user = User as ClaimsPrincipal;
+            string userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
+           
+            if (userId == null)
+                return View();
+            else
+            {
+                bool _isvalid = _userService.CheckUserLogin(Int32.Parse(userId));
+                if (_isvalid)
+                {
+                    AccountViewModel accountView = new AccountViewModel()
+                    {
+                        Account = _userService.GetUserInfo(Int32.Parse(userId)),
+                        AddressCity = _addressService.GetCities(),
+                        AddressDistrict = _addressService.GetDistricts(),
+                        AddressWard = _addressService.GetWards()
+                    };
+                    return View(accountView);
+                }
+                else
+                    return View();
+            }
+
+
+        }
+        [HttpPost]
+        public IActionResult UpdateInfo(Account account)
+        {
+            var user = User as ClaimsPrincipal;
+            string userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null)
+                return NotFound();
+            Account oldAccount = _userService.GetUser(Int16.Parse(userId));
+            if (oldAccount == null)
+                return NotFound();
+            _userService.UpdateAccount(oldAccount, account);
+            return Ok();
+        }
+
+
+
+        public IActionResult Logout()
+        {
+            foreach (var cookie in Request.Cookies.Keys)
+            {
+                Response.Cookies.Delete(cookie);
+            }
+            HttpContext.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

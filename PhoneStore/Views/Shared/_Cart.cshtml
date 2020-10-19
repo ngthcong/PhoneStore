@@ -2,8 +2,10 @@
 @model PhoneStore.Models.ViewModel.CartViewModel
 @using PhoneStore.CustomHandler
 @{
-
-
+    if(Model != null)
+    {
+        PhoneStore.Data.Account account = Model.Account;
+    }
 }
 <div class="container" id="cart_container">
     @if (Model != null)
@@ -119,77 +121,232 @@
                     </div>
                 </div>
                 <div class="col-lg-8 ">
+                    @{
 
-                    <!-- Delivery -->
-                    <div class="contact">
-                        <div class="section_title">Thông tin khách hàng</div>
-                        <div class="contact_form_container">
-                            <div class="contact_form">
-                                <div class="row">
-                                    <div class="col-xl-6 input-group1">
-                                        <!-- Name -->
-                                        <label for="contact_name">Họ và tên*</label>
-                                        <input type="text" id="InvCusName" name="InvCusName" class="contact_input">
+                        PhoneStore.Data.Account account = Model.Account;
+
+                    }
+                    @if (Model.Account != null)
+                    {
+                        <!-- Delivery -->
+                        <div class="contact">
+                            <div class="section_title">Thông tin khách hàng</div>
+                            <div class="contact_form_container">
+                                <div class="contact_form">
+                                    <div class="row">
+                                        <div class="col-xl-6 input-group1">
+                                            <!-- Name -->
+                                            <label for="contact_name">Họ và tên*</label>
+                                            <input type="text" id="InvCusName" name="InvCusName" value="@Model.Account.AccName" class="contact_input">
+                                        </div>
+                                        <div class="col-xl-6 input-group1">
+                                            <!-- Last Name -->
+                                            <label for="contact_last_name">Số điện thoại*</label>
+                                            <input type="text" id="InvCusPhone" name="InvCusPhone" value="@Model.Account.AccPhone" class="contact_input">
+                                        </div>
                                     </div>
-                                    <div class="col-xl-6 input-group1">
-                                        <!-- Last Name -->
-                                        <label for="contact_last_name">Số điện thoại*</label>
-                                        <input type="text" id="InvCusPhone" name="InvCusPhone" class="contact_input">
+                                    <div class="row">
+                                        <div class="col-xl-6  input-group1">
+                                            <!-- Last Name -->
+                                            <label for="contact_last_name">Email*</label>
+                                            <input type="email" id="InvCusEmail" name="InvCusEmail" value="@Model.Account.AccEmail" class="contact_input">
+                                        </div>
+                                        <div class="col-xl-6 input-group1">
+                                            <!-- Name -->
+                                            <label for="contact_name">Tỉnh/ Thành phố*</label>
+                                            <select id="cities" name="InvCityId" class="contact_input">
+                                                <option value="" disabled selected hidden></option>
+
+                                                @if (account.AccWard != null)
+                                                {
+                                                    foreach (var item in Model.cities)
+                                                    {
+                                                        if (account.AccWard.District.City.CityId == item.CityId)
+                                                        {
+                                                            <option selected value="@item.CityId">@item.CityName</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@item.CityId">@item.CityName</option>
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <option value="" disabled selected hidden></option>
+                                                    foreach (var item in Model.cities)
+                                                    {
+                                                        <option value="@item.CityId">@item.CityName</option>
+                                                    }
+                                                }
+
+                                            </select>
+                                        </div>
+
+
                                     </div>
+                                    <div class="row">
+                                        <div class="col-xl-6 input-group1">
+                                            <!-- Last Name -->
+                                            <label for="contact_last_name">Quận/ Huyện*</label>
+
+
+
+                                            <select id="district" name="InvDistrictId" class="contact_input" @if (account.AccWard == null) { @: disabled="disabled"
+                                                    }>
+                                                @if (account.AccWard != null)
+                                                {
+                                                    foreach (var item in Model.district.Where(x => x.CityId == account.AccWard.District.City.CityId))
+                                                    {
+                                                        if (account.AccWard.District.DistrictId == item.DistrictId)
+                                                        {
+                                                            <option selected value="@item.DistrictId">@item.DistrictName</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@item.DistrictId">@item.DistrictName</option>
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <option value="" disabled selected hidden></option>
+
+                                                }
+
+                                            </select>
+                                        </div>
+                                        <div class="col-xl-6 input-group1">
+                                            <!-- Name -->
+                                            <label for="contact_name">Phường/ Xã*</label>
+
+
+                                            <select id="ward" name="InvWardId" class="contact_input" @if (account.AccWard == null) { @: disabled="disabled"
+                                                    }>
+
+                                                @if (account.AccWard != null)
+                                                {
+                                                    foreach (var item in Model.ward.Where(x => x.District.City.CityId == account.AccWard.District.City.CityId))
+                                                    {
+                                                        if (account.AccWard.WardId == item.WardId)
+                                                        {
+                                                            <option selected value="@item.WardId">@item.WardName</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@item.WardId">@item.WardName</option>
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <option value="" disabled selected hidden></option>
+
+                                                }
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-xl-12 input-group1">
+                                            <!-- Name -->
+                                            <label for="contact_name">Số nhà và đường*</label>
+                                            <input type="text" id="contact_name" name="InvAddress" value="@account.AccAddress" class="contact_input">
+                                        </div>
+
+                                    </div>
+
                                 </div>
-                                <div class="row">
-                                    <div class="col-xl-6  input-group1">
-                                        <!-- Last Name -->
-                                        <label for="contact_last_name">Email*</label>
-                                        <input type="email" id="InvCusEmail" name="InvCusEmail" class="contact_input">
-                                    </div>
-                                    <div class="col-xl-6 input-group1">
-                                        <!-- Name -->
-                                        <label for="contact_name">Tỉnh/ Thành phố*</label>
-                                        <select id="cities" name="InvCityId" class="contact_input">
-                                            <option value="" disabled selected hidden></option>
-                                            @foreach (var item in Model.cities)
-                                            {
-                                                <option value="@item.CityId">@item.CityName</option>
-
-                                            }
-
-
-                                        </select>
-                                    </div>
-
-
-                                </div>
-                                <div class="row">
-                                    <div class="col-xl-6 input-group1">
-                                        <!-- Last Name -->
-                                        <label for="contact_last_name">Quận/ Huyện*</label>
-                                        <select id="district" name="InvDistrictId" disabled="disabled" class="contact_input">
-                                        </select>
-                                    </div>
-                                    <div class="col-xl-6 input-group1">
-                                        <!-- Name -->
-                                        <label for="contact_name">Phường/ Xã*</label>
-                                        <select id="ward" name="InvWardId" disabled="disabled" class="contact_input">
-                                        </select>
-                                    </div>
-
-                                </div>
-                                <div class="row">
-
-                                    <div class="col-xl-12 input-group1">
-                                        <!-- Name -->
-                                        <label for="contact_name">Số nhà và đường*</label>
-                                        <input type="text" id="contact_name" name="InvAddress" class="contact_input">
-                                    </div>
-
-                                </div>
-
                             </div>
+
                         </div>
 
-                    </div>
+                    }
+                    else
+                    {
+                        <!-- Delivery -->
+                        <div class="contact">
+                            <div class="section_title">Thông tin khách hàng</div>
+                            <div class="contact_form_container">
+                                <div class="contact_form">
+                                    <div class="row">
+                                        <div class="col-xl-6 input-group1">
+                                            <!-- Name -->
+                                            <label for="contact_name">Họ và tên*</label>
+                                            <input type="text" id="InvCusName" name="InvCusName"  class="contact_input">
+                                        </div>
+                                        <div class="col-xl-6 input-group1">
+                                            <!-- Last Name -->
+                                            <label for="contact_last_name">Số điện thoại*</label>
+                                            <input type="text" id="InvCusPhone" name="InvCusPhone"  class="contact_input">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xl-6  input-group1">
+                                            <!-- Last Name -->
+                                            <label for="contact_last_name">Email*</label>
+                                            <input type="email" id="InvCusEmail" name="InvCusEmail"  class="contact_input">
+                                        </div>
+                                        <div class="col-xl-6 input-group1">
+                                            <!-- Name -->
+                                            <label for="contact_name">Tỉnh/ Thành phố*</label>
+                                            <select id="cities" name="InvCityId" class="contact_input">
+                                                <option value="" disabled selected hidden></option>
 
+                                               
+                                                    <option value="" disabled selected hidden></option>
+                                                    @foreach (var item in Model.cities)
+                                                    {
+                                                        <option value="@item.CityId">@item.CityName</option>
+                                                    }
+                                                
+
+                                            </select>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xl-6 input-group1">
+                                            <!-- Last Name -->
+                                            <label for="contact_last_name">Quận/ Huyện*</label>
+
+
+
+                                            <select id="district" name="InvDistrictId" class="contact_input"  disabled="disabled">
+                                               
+                                                    <option value="" disabled selected hidden></option>
+
+                                                
+                                            </select>
+                                        </div>
+                                        <div class="col-xl-6 input-group1">
+                                            <!-- Name -->
+                                            <label for="contact_name">Phường/ Xã*</label>
+                                            <select id="ward" name="InvWardId" class="contact_input" disabled="disabled">
+                                                    <option value="" disabled selected hidden></option>
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-xl-12 input-group1">
+                                            <!-- Name -->
+                                            <label for="contact_name">Số nhà và đường*</label>
+                                            <input type="text" id="contact_name" name="InvAddress"  class="contact_input">
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    }
+               
 
                 </div>
 
@@ -199,7 +356,7 @@
 
 
                 <div class="col-lg-5">
-                    <button type="submit" style=" height: 60px; font-size: 15px; text-transform:uppercase;" class=" checkout_button">
+                    <button type="submit" style=" height: 60px; font-size: 15px; text-transform:uppercase;" class="checkout_button">
                         <strong>Đặt hàng</strong>
 
                     </button>

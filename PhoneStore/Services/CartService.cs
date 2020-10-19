@@ -26,12 +26,13 @@ namespace PhoneStore.Services
     {
         private readonly IProductRepo _repo;
         private readonly IMapper _mapper;
-       
+
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IProductService _proService;
         private readonly IProductRepo _productRepo;
         private readonly IInvoiceRepo _invoiceRepo;
         private readonly IUserService _userService;
+        private readonly IAddressService _addressService;
 
         public CartService(IProductRepo repo,
             IMapper mapper,
@@ -39,9 +40,10 @@ namespace PhoneStore.Services
             IProductService productService,
             IProductRepo productRepo,
             IInvoiceRepo invoiceRepo,
-            IUserService userService
-            
-            
+            IUserService userService,
+            IAddressService addressService
+
+
             )
         {
             _repo = repo;
@@ -51,16 +53,18 @@ namespace PhoneStore.Services
             _productRepo = productRepo;
             _invoiceRepo = invoiceRepo;
             _userService = userService;
-            
+            _addressService = addressService;
+
         }
         public IEnumerable<ProductCookieModel> AddToCart(int pid)
         {
             var _cookie = GetCookies("CartCookie");
-            var _variant = _productRepo.GetVariant(pid);
+            var _product = _productRepo.GetProduct(pid);
+
             if (_cookie == null)
             {
 
-                string _productcookie = pid + "_" + _variant.VarId + "_1";
+                string _productcookie = pid + "_" + _product.ProVariant.First().VarId + "_1";
                 SetCookies("CartCookie", _productcookie, 2);
 
             }
@@ -68,26 +72,24 @@ namespace PhoneStore.Services
             {
                 //Tìm sản phẩm có sẵn
                 if (_cookie.Where(i => i.pid == pid).Any())
-                    _cookie.Where(i => i.pid == pid).Select(i => { i.qty += 1; return i; }).ToList();
+                {
+                    if (_cookie.Where(i => i.pid == pid).Select(i => i.qty).First() < 5)
+                        _cookie.Where(i => i.pid == pid).Select(i => { i.qty += 1; return i; }).ToList();
+                }
                 else
                 {
                     //Thêm sản phẩm mới
                     ProductCookieModel _model = new ProductCookieModel()
                     {
                         pid = pid,
-                        vid = _variant.VarId,
+                        vid = _product.ProVariant.First().VarId,
                         qty = 1
                     };
                     _cookie.Add(_model);
                 }
-
-
-
                 string _newCookie = JoinCookie(_cookie);
                 SetCookies("CartCookie", _newCookie, 2);
             }
-
-
             return _cookie;
 
         }
@@ -104,7 +106,7 @@ namespace PhoneStore.Services
 
         public int CartProductCount()
         {
-            var cart = GetCartProduct();
+            var cart = GetCartProduct(null);
             if (cart != null)
             {
                 return cart.cartItem.Count();
@@ -140,7 +142,24 @@ namespace PhoneStore.Services
             return cartPrice;
         }
 
-        public CartViewModel GetCartProduct()
+        public CartViewModel GetCartProduct(int? aid)
+        {
+            if(aid.HasValue)
+            {
+                Account account = _userService.GetUser(aid.Value);
+                CartViewModel cartModel = CartModel();
+                if (cartModel == null)
+                    return cartModel;
+                cartModel.Account = account;
+                return cartModel;
+            }
+            else
+            {
+                return CartModel();
+            }
+        }
+
+        public CartViewModel CartModel()
         {
             List<ProductCookieModel> _cookie = GetCookies("CartCookie");
             if (_cookie != null)
@@ -163,12 +182,13 @@ namespace PhoneStore.Services
                 {
                     cartItem = products,
                     cartPrice = GetCartPrice(products),
-                    cities = _proService.GetCities()
+                    cities = _addressService.GetCities(),
+                    district = _addressService.GetDistricts(),
+                    ward = _addressService.GetWards()
                 };
                 return cartModel;
             }
             else return null;
-
         }
 
         public List<ProductCookieModel> GetCookies(string key)
@@ -281,32 +301,46 @@ namespace PhoneStore.Services
         {
 
             List<ProductCookieModel> _cookie = GetCookies("CartCookie");
-            Invoice invoice = _mapper.Map<Invoice>(model);
-            invoice.InvStatus = null;
-            invoice.DateCreated = DateTime.Now;
-             _invoiceRepo.AddInvoice(invoice);
-            foreach (var item in _cookie)
+            if(_cookie == null)
             {
-                InvoiceDetail product = new InvoiceDetail()
+                Response<string> res = new Response<string>()
                 {
-                    InvId = invoice.InvId,
-                    ProId = item.pid,
-                    VarId = item.vid,
-                    ProQty = item.qty,
-                    ProPrice = _repo.GetProductPrice(item.pid)
+                    IsSuccess = false,
+                    Message = "Đã có lỗi xãy ra, bạn vui lòng thử lại sau"
                 };
-                _invoiceRepo.AddInvoiceDetail(product);
-                _repo.SaveChanges();
-            };
-
-
-            _httpContextAccessor.HttpContext.Response.Cookies.Delete("CartCookie");
-            Response<string> res = new Response<string>()
+                return res;
+            }
+            else
             {
-                IsSuccess = true,
-                Message = "Đặt hàng thành công. Hãy sẵn sàng điện thoại để chúng tôi liên hệ xác nhận qua số điện thoại"
-            };
-            return res;
+                Invoice invoice = _mapper.Map<Invoice>(model);
+                invoice.InvStatus = null;
+                invoice.DateCreated = DateTime.Now;
+                _invoiceRepo.AddInvoice(invoice);
+                _invoiceRepo.SaveChanges();
+                foreach (var item in _cookie)
+                {
+                    InvoiceDetail product = new InvoiceDetail()
+                    {
+                        InvId = invoice.InvId,
+                        ProId = item.pid,
+                        VarId = item.vid,
+                        ProQty = item.qty,
+                        ProPrice = _repo.GetProductPrice(item.pid)
+                    };
+                    _invoiceRepo.AddInvoiceDetail(product);
+                    _repo.SaveChanges();
+                };
+
+
+                _httpContextAccessor.HttpContext.Response.Cookies.Delete("CartCookie");
+                Response<string> res = new Response<string>()
+                {
+                    IsSuccess = true,
+                    Message = "Đặt hàng thành công. Hãy sẵn sàng điện thoại để chúng tôi liên hệ xác nhận qua số điện thoại"
+                };
+                return res;
+            }    
+           
 
 
 

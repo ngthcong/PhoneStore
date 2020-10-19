@@ -1,0 +1,116 @@
+﻿
+@{
+    ViewData["Title"] = "VariantInfo";
+    Layout = "~/Views/Shared/Admin/_AdminLayout.cshtml";
+}
+
+@model PhoneStore.Data.ProVariant
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+              
+
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-12">
+
+                    <div class="card card-success">
+                        <div class="card-header">
+                            <h3 class="card-title">Thêm màu sản phẩm: @Model.Pro.ProName</h3>
+                        </div>
+                        <form id="addvariant" enctype="multipart/form-data">
+                            <div class="card-body">
+
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label>Tên màu</label>
+                                            <input type="text" value="@Model.VarColor" class="form-control" id="color" name="color" placeholder="">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-8">
+                                        <div class="form-group">
+                                            <label for="customFile">Icon màu</label>
+                                            <div class="custom-file">
+                                                <input type="file" class="form-control-file border" id="colorIcon" name="ColorIcon" accept="image/*">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label for="customFile">Hình mô tả</label>
+
+                                            <div class="custom-file">
+                                                <input type="file" class="form-control-file border" name="proColorImage" id="colorImage" accept="image/*" multiple />
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label>Số lượng</label>
+                                            <input type="number" value="@Model.VarQty" class="form-control" id="VarQty" name="VarQty">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <!-- select -->
+                                        <div class="form-group">
+                                            <label>Trạng thái</label>
+                                            <select id="VarStatus" name="VarStatus" class="form-control">
+                                                @if (Model.VarStatus.Value)
+                                                {
+                                                    <option selected value="True">Hoạt động</option>
+                                                    <option value="False">Ẩn</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="True">Hoạt động</option>
+                                                    <option selected value="False">Ẩn</option>
+                                                }
+
+
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <input type="text" hidden value="@Model.VarId" id="VarId" name="VarId" />
+                                
+                            </div>
+                            <div class="card-footer">
+                                <button class="btn btn-default ">Huỷ</button>
+                                <button type="submit" class="btn btn-info float-right">Thêm</button>
+                            </div>
+                        </form>
+                        <!-- /.card-body -->
+                    </div>
+                </div>
+            </div>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+@section scripts{
+    <script src="~/plugins/jquery-validation/jquery.validate.min.js"></script>
+    <script src="~/plugins/jquery-validation/additional-methods.min.js"></script>
+    <script src="~/js/product/addvariant.js"></script>
+}
+

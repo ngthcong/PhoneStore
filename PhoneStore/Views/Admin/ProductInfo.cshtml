@@ -6,7 +6,6 @@
 @section css{ }
 @using PhoneStore.Data
 @model Product
-
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -34,7 +33,7 @@
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form role="form">
+                        <form id="form">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-2">
@@ -46,11 +45,12 @@
                                         <!-- /.card -->
                                     </div>
                                     <div class="col-md-10">
+                                        <input hidden  name="ProId" value="@Model.ProId" >
                                         <div class="row">
                                             <div class="col-sm-12">
                                                 <div class="form-group">
                                                     <label for="exampleInputEmail1">Tên sản phẩm</label>
-                                                    <input type="text" class="form-control" id="proName" value="@Model.ProName" placeholder="">
+                                                    <input type="text" class="form-control" id="proName" name="ProName" value="@Model.ProName" placeholder="">
                                                 </div>
                                             </div>
                                         </div>
@@ -58,19 +58,19 @@
                                             <div class="col-sm-4">
                                                 <div class="form-group">
                                                     <label for="exampleInputEmail1">Giá bán lẻ</label>
-                                                    <input type="number" class="form-control" id="proRetailPrice" value="@Model.ProRetailPrice" placeholder="">
+                                                    <input type="number" class="form-control" id="proRetailPrice" name="ProRetailPrice" value="@Model.ProRetailPrice" placeholder="">
                                                 </div>
                                             </div>
                                             <div class="col-sm-4">
                                                 <div class="form-group">
                                                     <label for="exampleInputEmail1">Giá khuyến mãi</label>
-                                                    <input type="number" class="form-control" id="ProSalePrice" value="@Model.ProSalePrice" placeholder="">
+                                                    <input type="number" class="form-control" id="ProSalePrice" name="ProSalePrice" value="@Model.ProSalePrice" placeholder="">
                                                 </div>
                                             </div>
                                             <div class="col-sm-4">
                                                 <div class="form-group">
                                                     <label for="exampleInputEmail1">Tình trạng</label>
-                                                    <select id="ProStatus" name="proBrandId" class="form-control">
+                                                    <select id="ProStatus" name="ProStatus" class="form-control">
                                                         @if (Model.ProStatus.Value)
                                                         {
                                                             <option value="true" selected>Đang bán</option>
@@ -90,7 +90,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-sm-6">
-                                                <button type="submit" class="btn btn-outline-primary mt-3">Thông tin kỹ thuật</button>
+                                                <a href="@Url.Action("productspec","Admin",new {pid = Model.ProId })" class="btn btn-outline-primary mt-3">Thông tin kỹ thuật</a>
                                             </div>
                                         </div>
                                     </div>
@@ -98,8 +98,8 @@
 
                             </div>
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-info">Lưu chỉnh sửa</button>
-                                <button id="deleteProduct" class="btn btn-warning float-right">Xoá sản phẩm</button>
+                                <button type="submit" class="btn btn-info float-right">Lưu chỉnh sửa</button>
+
                             </div>
 
 
@@ -126,7 +126,7 @@
                                                 </div>
                                                 <div class="col-md-7">
                                                     <p class="">Màu: @item.VarColor</p>
-                                                    <button type="button" class="btn btn-outline-primary">Chỉnh sửa</button>
+                                                    <a href="@Url.Action("","",new {vid = item.VarId })" class="btn btn-outline-primary">Chỉnh sửa</a>
 
                                                 </div>
                                             </div>
@@ -156,7 +156,14 @@
                 </div>
                 <!-- /.row -->
             </div><!-- /.container-fluid -->
+        </div>
     </section>
     <!-- /.content -->
 </div>
-@section scripts{ }
+@section scripts{
+
+    <script src="~/plugins/jquery-validation/jquery.validate.min.js"></script>
+    <script src="~/plugins/jquery-validation/additional-methods.min.js"></script>
+    
+    <script src="~/js/product/productinfo.js"></script>
+}

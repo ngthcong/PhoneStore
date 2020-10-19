@@ -19,7 +19,7 @@ namespace PhoneStore.Interfaces.Services
         void SetCookies(string key, string value, int? expireTime);
         List<ProductCookieModel> GetCookies(string key);
         string JoinCookie(List<ProductCookieModel> model);
-        CartViewModel GetCartProduct();
+        CartViewModel GetCartProduct(int? aid);
 
         int CartProductCount();
         CartPriceViewModel GetCartPrice(List<CartItemViewModel> cartItems);

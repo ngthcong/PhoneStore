@@ -61,6 +61,8 @@ namespace PhoneStore
             services.AddScoped<IAdminProductRepo, AdminProductRepo>();
             services.AddScoped<IAdminInvoiceRepo, AdminInvoiceRepo>();
             services.AddScoped<IInvoiceRepo, InvoiceRepo>();
+            services.AddScoped<IAddressRepository, AddressRepository>();
+           
             services.AddScoped(typeof(IRepository<>),typeof( BaseRepository<>));
 
             services.AddScoped<IProductService, ProductService>();
@@ -69,6 +71,8 @@ namespace PhoneStore
             services.AddScoped<IAdminProductService, AdminProductService>();
             services.AddScoped<IAdminInvoiceService, AdminInvoiceService>();
             services.AddScoped<ICartService, CartService>();
+            services.AddScoped<IAddressService, AddressService>();
+            services.AddScoped<ISearchService, SearchService>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 

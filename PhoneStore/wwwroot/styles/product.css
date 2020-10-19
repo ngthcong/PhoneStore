@@ -408,10 +408,11 @@ section {
     position: absolute;
     right: -15px;
     top: calc(100% + 20px);
-    text-align: right;
+    text-align: left;
+    width: 150px;
     background: #FFFFFF;
     padding-right: 25px;
-    padding-left: 35px;
+    padding-left: 25px;
     padding-top: 25px;
     padding-bottom: 25px;
     visibility: hidden;

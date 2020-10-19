@@ -1,0 +1,116 @@
+﻿
+@{
+    ViewData["Title"] = "Invoice List";
+    Layout = "~/Views/Shared/Admin/_AdminLayout.cshtml";
+}
+
+
+@section css{
+
+    <!-- DataTables -->
+
+    <link href="~/plugins/datatables-bs4/css/dataTables.bootstrap4.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+
+
+}
+@using PhoneStore.Data;
+@model ICollection<Invoice>
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-12">
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Danh sách đơn hàng đang chờ duyệt</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table id="dataTable" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Tên khách hàng</th>
+                                    <th>Số lượng sản phẩm</th>
+                                    <th>Giá trị đơn hàng</th>
+                                    <th>Thời gian đặt</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.OrderByDescending(i => i.DateCreated))
+                                {
+                                    <tr>
+                                        <td>@item.InvId</td>
+                                        <td>
+                                            <a href="@Url.Action("Invoicedetail","Admin",new {id = item.InvId })">
+                                                @item.InvCusName
+                                            </a>
+
+                                        </td>
+
+                                        @{ int i = 0; double total = 0;
+                                            <td>
+
+                                                @foreach (InvoiceDetail variant in item.InvoiceDetail)
+                                                {
+                                                    i += variant.ProQty.Value;
+                                                    total = variant.ProPrice.Value * variant.ProQty.Value;
+                                                }
+                                                @i
+                                            </td>
+                                        }
+
+                                        <td>@total</td>
+                                        <td>@item.DateCreated.Value.ToString("dd-MM-yyyy hh:mm")</td>
+
+                                    </tr>
+                                }
+
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+</div>
+
+@section scripts{
+
+
+    <!-- DataTables -->
+    <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+
+    <script>
+        $(function () {
+            $("#dataTable").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+            });
+
+        });
+    </script>
+}
+

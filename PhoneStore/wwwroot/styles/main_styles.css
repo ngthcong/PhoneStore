@@ -410,10 +410,11 @@ section {
 	position: absolute;
 	right: -15px;
 	top: calc(100% + 20px);
-	text-align: right;
+	text-align: left;
+	width:150px;
 	background: #FFFFFF;
 	padding-right: 25px;
-	padding-left: 35px;
+	padding-left: 25px;
 	padding-top: 25px;
 	padding-bottom: 25px;
 	visibility: hidden;
@@ -1481,3 +1482,62 @@ section {
 			.footer_social ul li a i:hover {
 				color: #FFFFFF;
 			}
+
+.search-hover {
+	position: relative;
+	width: auto;
+}
+
+	.search-hover .search-list {
+		border-radius: 5px;
+		box-shadow: 0 0 8px 0 rgba(0,0,0,.15);
+		background-color: #f9f9f9;
+		position: absolute;
+		left: 0;
+		width: 100%;
+		overflow: hidden;
+		opacity: 0;
+		visibility: hidden;
+		transition: all .1s;
+		z-index: 122;
+		max-height: 600px;
+		overflow-y: auto;
+	}
+
+		.search-hover .search-list .search-item {
+			height: 100px;
+			width: 100%;
+			padding: 10px 20px;
+			border-bottom: 1px solid #ddd;
+		}
+
+			.search-hover .search-list .search-item a {
+				display: flex;
+				align-items: flex-start;
+			}
+
+				.search-hover .search-list .search-item a .info {
+					padding: 5px;
+				}
+
+					.search-hover .search-list .search-item a .info p {
+						font-size: 14px;
+						font-weight: 500;
+						line-height: 14px;
+						color: #000;
+						padding: 2px;
+						width: 100%;
+						display: block;
+						margin: 0;
+					}
+
+				.search-hover .search-list .search-item a .image {
+					width: 72px;
+					height: 80px;
+					border-radius: 5px;
+				}
+
+		.search-hover .search-list.open {
+			opacity: 1;
+			visibility: visible;
+		}

@@ -321,5 +321,20 @@ namespace PhoneStore.Services
             };
             return res;
         }
+
+        public Product Update(Product product)
+        {
+          Product oldProduct =   _repo.GetProduct(product.ProId);
+            if (oldProduct == null)
+                return oldProduct;
+            oldProduct.ProName = product.ProName;
+            oldProduct.ProSalePrice = product.ProSalePrice;
+            oldProduct.ProStatus = product.ProStatus;
+            oldProduct.ProRetailPrice = product.ProRetailPrice;
+
+            _repo.Update(oldProduct);
+            _repo.SaveChanges();
+            return oldProduct;
+        }
     }
 }

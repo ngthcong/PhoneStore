@@ -10,6 +10,7 @@ namespace PhoneStore.Models.ViewModel
     {
        public ICollection<Product> Products { get; set; }
        public ICollection<Invoice> Invoices { get; set; }
+        public ICollection<Account> Accounts { get; set; }
        
     }
 }

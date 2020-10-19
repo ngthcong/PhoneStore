@@ -56,7 +56,9 @@
                                     <tr>
                                         <td>@item.ProId</td>
                                         <td>
-                                            @item.ProName
+                                            <a href="@Url.Action("productinfo","Admin",new {pid = item.ProId })">
+                                                @item.ProName
+                                                </a>
                                         </td>
                                         <td>@item.ProGroup.GroupName</td>
                                         <td>@item.ProRetailPrice</td>
