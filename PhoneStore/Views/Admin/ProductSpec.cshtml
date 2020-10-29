@@ -46,7 +46,7 @@
                                             <div class="col-sm-4">
                                                 <div class="form-group">
                                                     <label> @item.Spec.SpecName</label>
-                                                    <input type="text" class="form-control" id="@item.SpecId" data-spec="@item.SpecId" name="@item.SpecId" value="@item.SpecValue">
+                                                    <input type="text" class="form-control" id="@item.SpecId" data-spec="@item.SpecId" name="@item.SpecId" disabled="disabled" value="@item.SpecValue">
                                                 </div>
                                             </div>
                                         }
@@ -57,7 +57,7 @@
                             <div class="card-footer">
 
 
-                                <button type="submit" class="btn btn-info float-right">Lưu</button>
+                                @*<button type="submit" class="btn btn-info float-right">Lưu</button>*@
                             </div>
                         </form>
                         <!-- /.card-body -->

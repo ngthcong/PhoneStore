@@ -19,10 +19,16 @@ namespace PhoneStore.Controllers
             _searchService = searchService;
         }
 
-        [HttpGet("{name}")]
-        public IActionResult Search( string name)
+        [HttpGet("{query}")]
+        public IActionResult Search( string query)
         {
-            return Ok(_searchService.GetProducts(name));
+            
+           bool isNumber =  double.TryParse(query, out double n);
+            if (isNumber)
+            {
+                return Ok(_searchService.GetProductsByPrice(n));
+            }
+            return Ok(_searchService.GetProductsByName(query));
         }
     }
 }

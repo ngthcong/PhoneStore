@@ -6,6 +6,7 @@ using Microsoft.VisualBasic;
 using PhoneStore.CustomHandler;
 using PhoneStore.Data;
 using PhoneStore.Interfaces;
+using PhoneStore.Interfaces.Repositories;
 using PhoneStore.Interfaces.Services;
 using PhoneStore.Models;
 using PhoneStore.Models.FormModel;
@@ -27,12 +28,14 @@ namespace PhoneStore.Services
         private readonly IProductRepo _repo;
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment _hosting;
+        private readonly IRepository<ProVariant> _variantRepo;
 
-        public ProductService(IProductRepo repo, IMapper mapper, IWebHostEnvironment hosting)
+        public ProductService(IProductRepo repo, IMapper mapper, IWebHostEnvironment hosting, IRepository<ProVariant> variantRepo )
         {
             _repo = repo;
             _mapper = mapper;
             _hosting = hosting;
+            _variantRepo = variantRepo;
         }
 
         public void AddDescription(DescriptionModel des)
@@ -63,38 +66,6 @@ namespace PhoneStore.Services
             _repo.SaveChanges();
         }
 
-
-        //public void AddPhone(ProductModel model, PhoneModel p)
-        //{
-        //    string imageName = UploadImage(model.proName, "chung", model.proImageStream);
-        //    Product product = _mapper.Map<Product>(model);
-        //    product.ProVisible = false;
-        //    product.ProTypeId = null;
-        //    product.ProImage = imageName;
-        //    int proId = _repo.AddProduct(product);
-
-
-        //    int index = 1;
-        //    Type type = typeof(PhoneModel);
-        //    PropertyInfo[] properties = type.GetProperties();
-        //    foreach (PropertyInfo property in properties)
-        //    {
-        //        ProSpecification spec = new ProSpecification()
-        //        {
-        //            ProId = proId,
-        //            SpecIndex = index,
-        //            SpecValue = property.GetValue(p, null).ToString()
-        //        };
-
-        //        _repo.AddProductSpec(spec);
-        //        _repo.SaveChanges();
-        //        index++;
-        //    }
-
-        //}
-
-
-
         public void AddVariant(VariantModel v)
         {
 
@@ -116,7 +87,7 @@ namespace PhoneStore.Services
             _repo.AddPhoneVariant(proVariant);
             _repo.SaveChanges();
 
-            for (int i = 0; i < v.proColorImage.Length; i++)
+            for (int i = 0; i < 4; i++)
             {
                 VarImages varImages = new VarImages()
                 {
@@ -127,6 +98,44 @@ namespace PhoneStore.Services
                 _repo.AddVariantImages(varImages);
                 _repo.SaveChanges();
             }
+        }
+        public void UpdateVariant(VariantModel v)
+        {
+            ProVariant variant = _variantRepo.GetByID(v.proId.Value);
+            variant.VarColor = v.color;
+            variant.VarQty = v.proQty;
+            variant.VarStatus = v.proStatus;
+
+            if (v.proColorIcon != null)
+            {
+                string _iconImage = UploadImageAsync(v.proColorIcon);
+                variant.VarColorIcon = _iconImage;
+            }
+            
+            _variantRepo.Update(variant);
+            _variantRepo.SaveChanges();
+
+            if (v.proColorImage != null)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    VarImages varImages = new VarImages()
+                    {
+                        ImgPath = UploadImageAsync(v.proColorImage[i]),
+                        VarId = variant.VarId,
+                        ImgIndex = i + 1,
+                    };
+                    _repo.AddVariantImages(varImages);
+                    _repo.SaveChanges();
+                }
+            }
+            Product product = GetProduct(variant.ProId.Value);
+            if(product.ProVariant.Where(x =>x.VarStatus.Value == true).Count() == 0)
+            {
+                product.ProStatus = false;
+                _repo.SaveChanges();
+            }
+
         }
 
 
@@ -179,7 +188,9 @@ namespace PhoneStore.Services
             HeaderViewModel menu = new HeaderViewModel()
             {
                 Phone = _repo.GetGroup(1),
-                Accesscories = _repo.GetGroup(2)
+                Accesscories = _repo.GetGroup(2),
+                Laptops = _repo.GetGroup(3)
+
             };
             return menu;
         }

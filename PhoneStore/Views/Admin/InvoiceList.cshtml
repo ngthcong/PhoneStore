@@ -15,13 +15,16 @@
 
 }
 @using PhoneStore.Data;
+@using PhoneStore.CustomHandler
 @model ICollection<Invoice>
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
-
+                <div class="col-sm-6">
+                    <h1>Danh sách đơn hàng</h1>
+                </div>
             </div>
         </div><!-- /.container-fluid -->
     </section>
@@ -33,7 +36,7 @@
 
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Danh sách đơn hàng đang chờ duyệt</h3>
+                      
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
@@ -45,37 +48,50 @@
                                     <th>Số lượng sản phẩm</th>
                                     <th>Giá trị đơn hàng</th>
                                     <th>Thời gian đặt</th>
+                                    <th>Tình trạng</th>
 
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach (var item in Model.OrderByDescending(i => i.DateCreated))
                                 {
-                                    <tr>
-                                        <td>@item.InvId</td>
+                                <tr>
+                                    <td>@item.InvId</td>
+                                    <td>
+                                        <a href="@Url.Action("Invoicedetail","Admin",new {id = item.InvId })">
+                                            @item.InvCusName
+                                        </a>
+
+                                    </td>
+
+                                    @{ int i = 0; double total = 0;
                                         <td>
-                                            <a href="@Url.Action("Invoicedetail","Admin",new {id = item.InvId })">
-                                                @item.InvCusName
-                                            </a>
 
+                                            @foreach (InvoiceDetail variant in item.InvoiceDetail)
+                                            {
+                                                i += variant.ProQty.Value;
+                                                total = variant.ProPrice.Value * variant.ProQty.Value;
+                                            }
+                                            @i
                                         </td>
+                                    }
 
-                                        @{ int i = 0; double total = 0;
-                                            <td>
+                                    <td>@Currency.CurrencyFormat(total)</td>
+                                    <td>@item.DateCreated.Value.ToString("dd-MM-yyyy hh:mm")</td>
+                                    @if (item.InvStatus == null)
+                                    {
+                                        <td>Đang chờ duyệt</td>
 
-                                                @foreach (InvoiceDetail variant in item.InvoiceDetail)
-                                                {
-                                                    i += variant.ProQty.Value;
-                                                    total = variant.ProPrice.Value * variant.ProQty.Value;
-                                                }
-                                                @i
-                                            </td>
-                                        }
-
-                                        <td>@total</td>
-                                        <td>@item.DateCreated.Value.ToString("dd-MM-yyyy hh:mm")</td>
-
-                                    </tr>
+                                    }
+                                    else if (!item.InvStatus.Value)
+                                    {
+                                        <td>Đã huỷ</td>
+                                    }
+                                    else
+                                    {
+                                        <td>Đã duyệt</td>
+                                    }
+                                </tr>
                                 }
 
 

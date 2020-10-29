@@ -8,7 +8,8 @@ namespace PhoneStore.Interfaces.Services
 {
     public interface ISearchService
     {
-        ICollection<Product> GetProducts(string name);
+        ICollection<Product> GetProductsByName(string name);
+        ICollection<Product> GetProductsByPrice(double number);
 
     }
 }

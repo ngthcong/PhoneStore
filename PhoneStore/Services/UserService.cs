@@ -175,9 +175,18 @@ namespace PhoneStore.Services
             {
                 Response<string> response = new Response<string>()
                 {
-                    IsSuccess = true,
+                    IsSuccess = false,
                     Code = "200",
                     Message = "Mật khẩu nhập lại sai",
+                };
+                return response;
+            }else if(_userRepo.Get(filter: x =>x.AccEmail.ToLower() == model.AccEmail.ToLower()) != null)
+            {
+                Response<string> response = new Response<string>()
+                {
+                    IsSuccess = false,
+                    Code = "200",
+                    Message = "Email đã tồn tại",
                 };
                 return response;
             }

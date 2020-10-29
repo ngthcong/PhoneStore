@@ -8,6 +8,8 @@
 @{
     ICollection<BrandGroup> Phone = Model.Phone;
     ICollection<BrandGroup> Accesscories = Model.Accesscories;
+    ICollection<BrandGroup> Laptops = Model.Laptops;
+
 
     Account user = Model.user;
     int cartCount = Model.cartCount;
@@ -34,11 +36,10 @@
                                 <li class="hassubs">
                                     <a href="@Url.Action("Product","Product",new {gid = 3})">Laptop</a>
                                     <ul>
-                                        <li><a href="categories.html">Category</a></li>
-                                        <li><a href="categories.html">Category</a></li>
-                                        <li><a href="categories.html">Category</a></li>
-                                        <li><a href="categories.html">Category</a></li>
-                                        <li><a href="categories.html">Category</a></li>
+                                        @foreach (var item in Laptops)
+                                        {
+                                            <li><a href="@Url.Action("Product","Product", new { gid = 3, bid = item.BrandId })">@item.Brand.BrandName</a></li>
+                                        }
                                     </ul>
                                 </li>
                                 <li class="hassubs">

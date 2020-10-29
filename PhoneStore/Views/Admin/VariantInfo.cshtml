@@ -11,7 +11,7 @@
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
-              
+
 
             </div>
         </div><!-- /.container-fluid -->
@@ -30,7 +30,7 @@
                         </div>
                         <form id="addvariant" enctype="multipart/form-data">
                             <div class="card-body">
-
+                                <input hidden value="@Model.VarId" class="form-control" id="proId" name="proId" placeholder="">
                                 <div class="row">
                                     <div class="col-sm-4">
                                         <div class="form-group">
@@ -43,7 +43,7 @@
                                         <div class="form-group">
                                             <label for="customFile">Icon màu</label>
                                             <div class="custom-file">
-                                                <input type="file" class="form-control-file border" id="colorIcon" name="ColorIcon" accept="image/*">
+                                                <input type="file" class="form-control-file border" id="colorIcon" name="proColorIcon" accept="image/*">
 
                                             </div>
                                         </div>
@@ -66,14 +66,14 @@
                                     <div class="col-sm-4">
                                         <div class="form-group">
                                             <label>Số lượng</label>
-                                            <input type="number" value="@Model.VarQty" class="form-control" id="VarQty" name="VarQty">
+                                            <input type="number" value="@Model.VarQty" class="form-control" id="proQty" name="proQty">
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
                                         <!-- select -->
                                         <div class="form-group">
                                             <label>Trạng thái</label>
-                                            <select id="VarStatus" name="VarStatus" class="form-control">
+                                            <select id="VarStatus" name="proStatus" class="form-control">
                                                 @if (Model.VarStatus.Value)
                                                 {
                                                     <option selected value="True">Hoạt động</option>
@@ -91,12 +91,12 @@
                                     </div>
 
                                 </div>
-                                <input type="text" hidden value="@Model.VarId" id="VarId" name="VarId" />
-                                
+                               
+
                             </div>
                             <div class="card-footer">
-                                <button class="btn btn-default ">Huỷ</button>
-                                <button type="submit" class="btn btn-info float-right">Thêm</button>
+                                
+                                <button type="submit" class="btn btn-info float-right">Lưu</button>
                             </div>
                         </form>
                         <!-- /.card-body -->
@@ -111,6 +111,7 @@
 @section scripts{
     <script src="~/plugins/jquery-validation/jquery.validate.min.js"></script>
     <script src="~/plugins/jquery-validation/additional-methods.min.js"></script>
-    <script src="~/js/product/addvariant.js"></script>
+    
+    <script src="~/js/updatevariant.js"></script>
 }
 

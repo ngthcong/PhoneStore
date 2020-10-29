@@ -17,9 +17,18 @@ namespace PhoneStore.Services
             _productReposity = productRepository;
         }
 
-        public ICollection<Product> GetProducts(string name)
+        public ICollection<Product> GetProductsByName(string name)
         {
-            return _productReposity.Get(filter: x => x.ProName.Contains(name) && x.ProStatus == true);
+            return _productReposity.Get(filter: x => x.ProName.Contains(name) && x.ProStatus == true).Take(5).ToList();
+        }
+        public ICollection<Product> GetProductsByPrice(double number)
+        {
+            double up, down = 0;
+            up = number + 1000000;
+            down = number - 1000000;
+            ICollection<Product> products = _productReposity.Get(
+                filter: x => x.ProSalePrice.HasValue ? (x.ProSalePrice < up && x.ProSalePrice > down) : (x.ProRetailPrice < up && x.ProRetailPrice > down)).Take(5).ToList();
+            return products;
         }
     }
 }

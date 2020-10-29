@@ -77,7 +77,7 @@
                 contentType: false,
                 processData: false,
                 success: function (response) {
-                    alert("Them mau sam pham thanh cong")
+                    alert("Thêm phiên bản sản phẩm thành công")
                 },
                 error: function (xhr, error, status) {
                     console.log(error, status);

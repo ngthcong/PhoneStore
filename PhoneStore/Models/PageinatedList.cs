@@ -10,6 +10,9 @@ namespace PhoneStore.Models
     {
         public int PageIndex { get; private set; }
         public int TotalPages { get; private set; }
+        public int? Gid { get;  set; }
+        public int? Tid { get;  set; }
+        public int? Bid { get;  set; }
         public PageinatedList(List<T> items, int count , int pageIndex, int pageSize)
         {
             PageIndex = pageIndex;

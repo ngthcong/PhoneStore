@@ -41,23 +41,30 @@ namespace PhoneStore.Controllers
             };
             return new JsonResult(res);
         }
-        public IActionResult Product(int gid, int? tid, int? bid)
+        public IActionResult Product(int gid, int? tid, int? bid,int? page)
         {
             if (tid == null && bid == null)
             {
-                PageinatedList<Product> pages = PageinatedList<Product>.CreateAsync(_proService.GetProductsByGroup(gid).AsQueryable(), 1, 12);
+                PageinatedList<Product> pages = PageinatedList<Product>.CreateAsync(_proService.GetProductsByGroup(gid).AsQueryable(),page?? 1, 12);
+                pages.Gid = gid;
+                    
                 return View(pages);
             }
             else if (tid != null && bid == null)
             {
 
-                PageinatedList<Product> pages = PageinatedList<Product>.CreateAsync(_proService.GetProductsByType(gid, tid.Value).AsQueryable(), 1, 12);
+                PageinatedList<Product> pages = PageinatedList<Product>.CreateAsync(_proService.GetProductsByType(gid, tid.Value).AsQueryable(), page ?? 1, 12);
+                pages.Gid = gid;
+                pages.Tid = tid.Value;
+
                 return View(pages);
 
             }
             else
             {
-                PageinatedList<Product> pages = PageinatedList<Product>.CreateAsync(_proService.GetProductsByBrand(gid,null, bid.Value).AsQueryable(), 1, 12);
+                PageinatedList<Product> pages = PageinatedList<Product>.CreateAsync(_proService.GetProductsByBrand(gid,null, bid.Value).AsQueryable(), page ?? 1, 12);
+                pages.Gid = gid;
+                pages.Bid = bid.Value;
                 return View(pages);
             }
         }

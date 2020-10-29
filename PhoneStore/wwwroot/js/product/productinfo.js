@@ -67,8 +67,14 @@ $(document).ready(function () {
                 contentType: false,
                 processData: false,
                 success: function (response) {
-                    
-                      alert("Cập nhật thành công")
+                    if (response.isSuccess === false) {
+                        alert(response.message)
+                    }
+                    if (response.isSuccess === true) {
+                        alert(response.message)
+                    }
+
+            
 
                     
                 },

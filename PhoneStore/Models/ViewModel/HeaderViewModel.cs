@@ -11,6 +11,7 @@ namespace PhoneStore.Models.ViewModel
     {
         public ICollection<BrandGroup> Phone { get; set; }
         public ICollection<BrandGroup> Accesscories { get; set; }
+        public ICollection<BrandGroup> Laptops { get; set; }
         public Account user { get; set; }
         public int cartCount { get; set;}
     }

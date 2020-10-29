@@ -1,6 +1,9 @@
 ﻿using PhoneStore.Data;
+using PhoneStore.Interfaces;
+using PhoneStore.Interfaces.Repositories;
 using PhoneStore.Interfaces.Repository;
 using PhoneStore.Interfaces.Services;
+using PhoneStore.Models;
 using PhoneStore.Models.ViewModel;
 
 using PhoneStore.Models.ViewModel.ProductModel;
@@ -15,11 +18,16 @@ namespace PhoneStore.Services
     {
         private readonly IAdminProductRepo _adminProductRepo;
         private readonly IAdminInvoiceRepo _adminInvoiceRepo;
+        private readonly IProductService _productService;
+        private readonly IRepository<ProVariant> _variantRepo;
+        private readonly IProductRepo _productRepo;
 
-        public AdminProductService(IAdminProductRepo adminProductRepo, IAdminInvoiceRepo adminInvoiceRepo)
+        public AdminProductService(IRepository<ProVariant> variantRepo,IAdminProductRepo adminProductRepo, IAdminInvoiceRepo adminInvoiceRepo, IProductService productService)
         {
             _adminProductRepo = adminProductRepo;
             _adminInvoiceRepo = adminInvoiceRepo;
+            _productService = productService;
+            _variantRepo = variantRepo;
         }
 
         public ICollection<Product> GetAllProduct()
@@ -41,5 +49,6 @@ namespace PhoneStore.Services
         {
             throw new NotImplementedException();
         }
+       
     }
 }

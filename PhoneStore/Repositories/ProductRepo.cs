@@ -125,9 +125,7 @@ namespace PhoneStore.Repository
 
         public ICollection<Product> GetRelatedProducts(Product product)
         {
-            double up = product.ProRetailPrice.Value + 2000000;
-            double down = product.ProRetailPrice.Value - 2000000;
-            return _context.Product.Where(i => i.ProRetailPrice > down).Where(i => i.ProRetailPrice < up).OrderBy(r => Guid.NewGuid()).Take(4).ToList();
+            return _context.Product.Where(i => i.ProBrandId == product.ProBrandId && i.ProId != product.ProId).OrderBy(r => Guid.NewGuid()).Take(4).ToList();
         }
 
 

@@ -24,9 +24,9 @@
                     url: "/api/search/" + k,
                     contentType: "html",
                     success: function (result) {
+                        console.log(result.length)
 
-
-                        if (result.length == 2) {
+                        if (result.length == 0) {
 
                             var data = '<div class="search-item">' +
 

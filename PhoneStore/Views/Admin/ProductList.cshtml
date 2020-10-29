@@ -13,6 +13,7 @@
 
 }
 @using PhoneStore.Data
+@using PhoneStore.CustomHandler
 @model ICollection<Product>
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -22,7 +23,7 @@
                 <div class="col-sm-6">
                     <h1>Danh sách sản phẩm</h1>
                 </div>
-               
+
             </div>
         </div><!-- /.container-fluid -->
     </section>
@@ -34,7 +35,7 @@
 
                 <div class="card">
                     <div class="card-header">
-                       
+
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
@@ -58,11 +59,11 @@
                                         <td>
                                             <a href="@Url.Action("productinfo","Admin",new {pid = item.ProId })">
                                                 @item.ProName
-                                                </a>
+                                            </a>
                                         </td>
                                         <td>@item.ProGroup.GroupName</td>
-                                        <td>@item.ProRetailPrice</td>
-                                        <td>@item.ProSalePrice</td>
+                                        <td>@Currency.CurrencyFormat(item.ProRetailPrice)</td>
+                                        <td>@Currency.CurrencyFormat(item.ProSalePrice)</td>
                                         @{ double count = 0;
                                             foreach (ProVariant variant in item.ProVariant)
                                             {
@@ -70,8 +71,8 @@
                                             }
                                             <td>@count</td>
                                         }
-                                        
-                                        
+
+
                                         <td>
                                             @if (item.ProStatus.Value)
                                             {

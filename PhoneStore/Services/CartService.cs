@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using PhoneStore.CustomHandler;
 using PhoneStore.Data;
 using PhoneStore.Interfaces;
+using PhoneStore.Interfaces.Repositories;
 using PhoneStore.Interfaces.Repository;
 using PhoneStore.Interfaces.Services;
 using PhoneStore.Models;
@@ -33,6 +34,7 @@ namespace PhoneStore.Services
         private readonly IInvoiceRepo _invoiceRepo;
         private readonly IUserService _userService;
         private readonly IAddressService _addressService;
+        private readonly IRepository<ProVariant> _variantRepo;
 
         public CartService(IProductRepo repo,
             IMapper mapper,
@@ -41,7 +43,8 @@ namespace PhoneStore.Services
             IProductRepo productRepo,
             IInvoiceRepo invoiceRepo,
             IUserService userService,
-            IAddressService addressService
+            IAddressService addressService,
+            IRepository<ProVariant> variantRepo
 
 
             )
@@ -54,6 +57,7 @@ namespace PhoneStore.Services
             _invoiceRepo = invoiceRepo;
             _userService = userService;
             _addressService = addressService;
+            _variantRepo = variantRepo; ;
 
         }
         public IEnumerable<ProductCookieModel> AddToCart(int pid)
@@ -327,6 +331,10 @@ namespace PhoneStore.Services
                         ProQty = item.qty,
                         ProPrice = _repo.GetProductPrice(item.pid)
                     };
+
+                    
+                        UpdateQuantity(product);
+                    
                     _invoiceRepo.AddInvoiceDetail(product);
                     _repo.SaveChanges();
                 };
@@ -340,11 +348,13 @@ namespace PhoneStore.Services
                 };
                 return res;
             }    
-           
-
-
-
-
+        }
+        public void UpdateQuantity(InvoiceDetail invoiceDetail)
+        {
+            ProVariant variant = _variantRepo.GetByID(invoiceDetail.VarId);
+            variant.VarQty -= invoiceDetail.ProQty;
+            _variantRepo.Update(variant);
+            _variantRepo.SaveChanges();
         }
     }
 }

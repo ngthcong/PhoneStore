@@ -13,7 +13,7 @@
                 },
                 Pass: {
                     required: true,
-                    minlength: 6
+                    minlength: 8
                 },
                 Phone: {
                     required: true,

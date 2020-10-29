@@ -91,7 +91,9 @@
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <a href="@Url.Action("productspec","Admin",new {pid = Model.ProId })" class="btn btn-outline-primary mt-3">Thông tin kỹ thuật</a>
+                                                <a href="@Url.Action("adddescription","Admin",new {pid = Model.ProId })" class="btn btn-outline-primary mt-3">Thông tin mô tả</a>
                                             </div>
+                                          
                                         </div>
                                     </div>
                                 </div>
@@ -126,7 +128,7 @@
                                                 </div>
                                                 <div class="col-md-7">
                                                     <p class="">Màu: @item.VarColor</p>
-                                                    <a href="@Url.Action("","",new {vid = item.VarId })" class="btn btn-outline-primary">Chỉnh sửa</a>
+                                                    <a href="@Url.Action("variantInfo","admin",new {vid = item.VarId })" class="btn btn-outline-primary">Chỉnh sửa</a>
 
                                                 </div>
                                             </div>
